@@ -3,85 +3,88 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Your Site | Modern Requests</title>
+    <title>Your YouTube Channel</title>
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN (stand?alone) -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config = {
+    <script>
+        tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: "#6366f1" /* indigo?500 */
+                        primary: "#ff0000" // YouTube red
                     }
                 }
             }
-        }</script>
+        }
+    </script>
 </head>
 <body class="font-[Poppins] text-gray-800 bg-white">
 
     <!-- Hero -->
-    <header class="bg-gradient-to-br from-primary to-indigo-500 text-white py-20">
+    <header class="bg-gradient-to-br from-primary to-red-600 text-white py-20">
         <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-4">Need Something? Just Ask.</h1>
-            <p class="text-lg md:text-2xl mb-8 max-w-2xl mx-auto">Submit your request in seconds—no accounts, no hassle.</p>
-            <a href="#form" class="inline-block bg-white text-primary font-semibold px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-200">Submit a Request</a>
+            <h1 class="text-5xl md:text-6xl font-bold mb-4">Welcome to [Your Channel Name]</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Awesome videos, fun content, and everything in between.</p>
+            <a href="https://www.youtube.com/channel/YOUR_CHANNEL_ID" target="_blank"
+               class="inline-block bg-white text-primary font-semibold px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-200">
+                Subscribe Now
+            </a>
         </div>
     </header>
 
-    <!-- Features -->
+    <!-- Featured Video -->
     <section class="py-16 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-semibold text-center mb-12">Why use our request form?</h2>
-            <div class="grid gap-8 md:grid-cols-3">
-                <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition-shadow">
-                    <div class="text-primary text-4xl mb-4"><i class="fa-solid fa-bolt"></i></div>
-                    <h3 class="text-xl font-semibold mb-2">Fast</h3>
-                    <p>Submit in moments—no logins or registrations required.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition-shadow">
-                    <div class="text-primary text-4xl mb-4"><i class="fa-solid fa-shield-halved"></i></div>
-                    <h3 class="text-xl font-semibold mb-2">Secure</h3>
-                    <p>Your data travels encrypted straight to our inbox via Google Forms.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition-shadow">
-                    <div class="text-primary text-4xl mb-4"><i class="fa-solid fa-handshake-angle"></i></div>
-                    <h3 class="text-xl font-semibold mb-2">Personal</h3>
-                    <p>Real humans read every submission and respond promptly.</p>
-                </div>
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-semibold mb-8">Check Out Our Latest Video</h2>
+            <div class="relative pb-[56.25%] h-0 max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl">
+                <iframe class="absolute inset-0 w-full h-full"
+                        src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+                        frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </section>
 
-    <!-- Embedded Google Form -->
-    <section id="form" class="py-16">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-semibold text-center mb-8">Submit your request</h2>
+    <!-- About Channel -->
+    <section class="py-16">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-3xl font-semibold text-center mb-6">About the Channel</h2>
+            <p class="text-lg text-center text-gray-600 leading-relaxed">
+                [Your Channel Name] is where creativity meets entertainment. We post regular videos on [topics you cover—e.g., gaming, tutorials, skits, reviews].
+                Subscribe and join our growing community of awesome people!
+            </p>
+        </div>
+    </section>
 
-            <!-- Replace the src URL below with your Google Form's embed link -->
+    <!-- Optional Request Form -->
+    <section id="form" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-semibold text-center mb-8">Have a Request or Suggestion?</h2>
             <div class="relative pb-[56.25%] h-0 shadow-xl rounded-xl overflow-hidden">
+                <!-- Replace this URL with your actual Google Form embed link -->
                 <iframe class="absolute inset-0 w-full h-full border-0 rounded-xl"
-                        src="https://forms.gle/9rYyrzu9eHXzsMfj6L"
+                        src="REPLACE_WITH_YOUR_GOOGLE_FORM_EMBED_URL"
                         loading="lazy" allowfullscreen></iframe>
             </div>
-            <p class="mt-4 text-center text-sm text-gray-500">Powered by Google Forms — no sign?up needed.</p>
+            <p class="mt-4 text-center text-sm text-gray-500">Let us know what you'd like to see next!</p>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-300 py-8">
+    <footer class="bg-gray-900 text-gray-300 py-6">
         <div class="container mx-auto px-6 text-center">
-            <p>&copy; <span id="year"></span> YourSite. All rights reserved.</p>
+            <p>&copy; <span id="year"></span> [Your Channel Name]. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Font Awesome Icons -->
+    <!-- Font Awesome (optional for icons) -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-    <!-- Dynamic year -->
-    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
