@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>The Lone Wolf</title>
+    <title>The Lone Wolf - YouTube Channel</title>
 
     <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,7 +20,7 @@
                     }
                 }
             }
-        }
+        };
     </script>
 </head>
 <body class="font-[Poppins] text-gray-800 bg-white">
@@ -28,7 +28,7 @@
     <!-- Hero -->
     <header class="bg-gradient-to-br from-primary to-red-600 text-white py-20">
         <div class="container mx-auto px-6 text-center">
-            <h1 class="text-5xl md:text-6xl font-bold mb-4">Welcome to The Lone Wolf!</h1>
+            <h1 class="text-5xl md:text-6xl font-bold mb-4">Welcome to The Lone Wolf</h1>
             <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Awesome videos, fun content, and everything in between.</p>
             <a href="https://www.youtube.com/@thelonewolf-AS" target="_blank"
                class="inline-block bg-white text-primary font-semibold px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-200">
@@ -43,32 +43,59 @@
             <h2 class="text-3xl font-semibold mb-8">Check Out Our Latest Video</h2>
             <div class="relative pb-[56.25%] h-0 max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl">
                 <iframe class="absolute inset-0 w-full h-full"
-                        src="https://www.youtube.com/embed/YzFsDUtcQno?si=OC_ekCr15kpWN3XU"
-                        frameborder="0" allowfullscreen></iframe>
+                        src="https://www.youtube.com/embed/YzFsDUtcQno?si=xfrW4jYwScnrQjzY"
+                        frameborder="0"
+                        allowfullscreen></iframe>
             </div>
         </div>
     </section>
+
+    <!--Info for Website-->
+    <div>
+        <h2>Important!</h2>
+        <p>Until I can get this working, you might have to refresh the page to see changes.
+        <break/> Pc's: Ctrl+Shft+R
+        <break/> Android/iOS/Samsung: Refresh normally</p>
+    </div>
 
     <!-- About Channel -->
     <section class="py-16">
         <div class="container mx-auto px-6 max-w-4xl">
             <h2 class="text-3xl font-semibold text-center mb-6">About the Channel</h2>
             <p class="text-lg text-center text-gray-600 leading-relaxed">
-                The Lone Wolf is where creativity meets entertainment. We post regular videos on Mask Making, tail making, therian stuff, and more!
+                The Lone Wolf is where creativity meets entertainment. We post regular videos on gaming, tutorials, skits, and reviews.
                 Subscribe and join our growing community of awesome people!
             </p>
         </div>
     </section>
 
-    <!-- Optional Request Form -->
+    <!-- Request Form Selector -->
     <section id="form" class="py-16 bg-gray-100">
-        <div class="container mx-auto px-6">
+        <div class="container mx-auto px-6 max-w-3xl">
             <h2 class="text-3xl font-semibold text-center mb-8">Have a Request or Suggestion?</h2>
+
+            <!-- Selector -->
+            <div class="mb-8 flex justify-center gap-4">
+                <button class="btn-select bg-primary text-white px-6 py-2 rounded-md shadow hover:bg-red-700 transition"
+                        data-form="form1">
+                    Mask request
+                </button>
+                <button class="btn-select bg-gray-300 text-gray-800 px-6 py-2 rounded-md shadow hover:bg-gray-400 transition"
+                        data-form="form2">
+                    Tail Request
+                </button>
+                <button class="btn-select bg-gray-300 text-gray-800 px-6 py-2 rounded-md shadow hover:bg-gray-400 transition"
+                        data-form="form3">
+                    Video Request
+                </button>
+            </div>
+
+            <!-- Iframe container -->
             <div class="relative pb-[56.25%] h-0 shadow-xl rounded-xl overflow-hidden">
-                <!-- Replace this URL with your actual Google Form embed link -->
-                <iframe class="absolute inset-0 w-full h-full border-0 rounded-xl"
-                        src="https://docs.google.com/forms/d/e/1FAIpQLSdvvZUvaleGD__fWu_iC8hX74fNxr8Q9v6Lw8OSZxy-wmOJYg/viewform?usp=dialog"
-                        loading="lazy" allowfullscreen></iframe>
+                <iframe id="requestForm"
+                        class="absolute inset-0 w-full h-full border-0 rounded-xl"
+                        src="https://docs.google.com/forms/d/e/1FAIpQLSdvvZUvaleGD__fWu_iC8hX74fNxr8Q9v6Lw8OSZxy-wmOJYg/viewform?embedded=true"
+                        loading="lazy"></iframe>
             </div>
             <p class="mt-4 text-center text-sm text-gray-500">Let us know what you'd like to see next!</p>
         </div>
@@ -81,10 +108,39 @@
         </div>
     </footer>
 
-    <!-- Font Awesome (optional for icons) -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
+        // Buttons
+        const buttons = document.querySelectorAll(".btn-select");
+        const iframe = document.getElementById("requestForm");
+
+        // Your actual Google Form embed URLs here:
+        const formUrls = {
+            form1: "https://docs.google.com/forms/d/e/1FAIpQLSdvvZUvaleGD__fWu_iC8hX74fNxr8Q9v6Lw8OSZxy-wmOJYg/viewform?embedded=true",
+            form2: "https://docs.google.com/forms/d/e/1FAIpQLSe1DRXAirat96Gv32LmOrex_yRWNe-BRNVoCQdJyCTIxBupmA/viewform?embedded=true",
+            form3: "https://docs.google.com/forms/d/e/1FAIpQLSdynAz96c0xQ9PWRJX0-8RswBihF_11axm3vdyosHuwg3WH7Q/viewform?embedded=true"
+        };
+
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                // Update iframe src to chosen form
+                const selected = btn.getAttribute("data-form");
+                iframe.src = formUrls[selected];
+
+                // Update button styles
+                buttons.forEach(b => {
+                    b.classList.remove("bg-primary", "text-white");
+                    b.classList.add("bg-gray-300", "text-gray-800");
+                });
+                btn.classList.add("bg-primary", "text-white");
+                btn.classList.remove("bg-gray-300", "text-gray-800");
+            });
+        });
+
+        // Set initial active button
+        buttons[0].click();
+
+        // Dynamic year in footer
+        document.getElementById("year").textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
