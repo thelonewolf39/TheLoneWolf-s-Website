@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your Site | Modern Requests</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN (stand?alone) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#6366f1" /* indigo?500 */
+                    }
+                }
+            }
+        }</script>
+</head>
+<body class="font-[Poppins] text-gray-800 bg-white">
+
+    <!-- Hero -->
+    <header class="bg-gradient-to-br from-primary to-indigo-500 text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Need Something? Just Ask.</h1>
+            <p class="text-lg md:text-2xl mb-8 max-w-2xl mx-auto">Submit your request in seconds—no accounts, no hassle.</p>
+            <a href="#form" class="inline-block bg-white text-primary font-semibold px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-200">Submit a Request</a>
+        </div>
+    </header>
+
+    <!-- Features -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-semibold text-center mb-12">Why use our request form?</h2>
+            <div class="grid gap-8 md:grid-cols-3">
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition-shadow">
+                    <div class="text-primary text-4xl mb-4"><i class="fa-solid fa-bolt"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Fast</h3>
+                    <p>Submit in moments—no logins or registrations required.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition-shadow">
+                    <div class="text-primary text-4xl mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Secure</h3>
+                    <p>Your data travels encrypted straight to our inbox via Google Forms.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow hover:shadow-lg transition-shadow">
+                    <div class="text-primary text-4xl mb-4"><i class="fa-solid fa-handshake-angle"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Personal</h3>
+                    <p>Real humans read every submission and respond promptly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Embedded Google Form -->
+    <section id="form" class="py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-semibold text-center mb-8">Submit your request</h2>
+
+            <!-- Replace the src URL below with your Google Form's embed link -->
+            <div class="relative pb-[56.25%] h-0 shadow-xl rounded-xl overflow-hidden">
+                <iframe class="absolute inset-0 w-full h-full border-0 rounded-xl"
+                        src="https://forms.gle/9rYyrzu9eHXzsMfj6L"
+                        loading="lazy" allowfullscreen></iframe>
+            </div>
+            <p class="mt-4 text-center text-sm text-gray-500">Powered by Google Forms — no sign?up needed.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; <span id="year"></span> YourSite. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <!-- Dynamic year -->
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
