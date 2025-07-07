@@ -1,0 +1,47 @@
+<section class="py-16 bg-gray-100">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Ideas - The Lone Wolf</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+  <div id="header-placeholder"></div>
+
+  <main class="max-w-6xl mx-auto px-6 py-16">
+    <section class="text-center mb-16">
+      <h1 class="text-4xl font-bold mb-4">Rate My Project Ideas ⭐</h1>
+      <p class="text-lg text-gray-600">
+        I'm thinking about some future ideas. Want to help choose what I do next?
+        You can rate them from 1 to 5 stars!
+      </p>
+    </section>
+
+    <!-- Common Ninja Widget Placeholder -->
+    <div id="commonninja_widget_placeholder" class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-gray-400 italic text-center">
+      ⭐ Your interactive rating widget will appear here once you connect Common Ninja ⭐
+    </div>
+
+    <!-- Paste your Common Ninja embed script below this comment -->
+    <!-- Example: <script src="https://cdn.commoninja.com/sdk/latest/your-widget-code.js"></script> -->
+  </main>
+
+  <footer class="bg-gray-900 text-gray-300 py-6 text-center">
+    &copy; <span id="year"></span> The Lone Wolf. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    fetch("header.html").then(res => res.text()).then(html => {
+      document.getElementById("header-placeholder").innerHTML = html;
+    });
+  </script>
+</body>
+</html>
