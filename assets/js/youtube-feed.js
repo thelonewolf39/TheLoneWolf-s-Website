@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const CHANNEL_ID = "UCo3Z-t-u4yfE5omo8Q_cl5Q";
-  const PROXY = "https://api.allorigins.win/raw?url=";
+  const PROXY = "https://corsproxy.io/?";
   const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
   const iframe = document.getElementById("latestYtVideo");
 
