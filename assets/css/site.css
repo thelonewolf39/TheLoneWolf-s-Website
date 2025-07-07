@@ -1,0 +1,16 @@
+/* --- sticky header --- */
+.site-header{position:sticky;top:0;z-index:1000;background:#111;color:#fff;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.75rem 1.25rem;box-shadow:0 2px 6px rgba(0,0,0,.25);}
+.site-header a{color:inherit;text-decoration:none;}
+body{scroll-margin-top:4.5rem;}          /* anchors land clear of header */
+
+/* --- card grid --- */
+.videos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1.5rem;padding:1rem;}
+.video-card{background:#181818;border-radius:12px;overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);display:flex;flex-direction:column;}
+.video-card iframe{width:100%;height:170px;border:0;}
+.video-card .info{padding:.75rem 1rem;color:#fff;}
+.video-card h3{font-size:1rem;margin:0 0 .4rem;}
+.video-card time{font-size:.875rem;opacity:.8;}
