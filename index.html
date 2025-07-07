@@ -63,10 +63,8 @@
 <body class="font-[Poppins] text-gray-800 bg-white">
 
     <!-- Sticky header -->
-    <div class="header">
-      <h1>The Lone Wolf</h1>
-      <p>A brief description of your website.</p>
-    </div>
+    <div id="header-placeholder"></div>
+
 
     <!-- Hero -->
     <header class="bg-gradient-to-br from-primary to-red-600 text-white py-20">
@@ -224,6 +222,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // setInterval(loadLatestVideo, 1000 * 60 * 30);
 });
 </script>
+    
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('header.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('header-placeholder').innerHTML = html;
+        })
+        .catch(console.error);
+    });
+  </script>
+</body>
 
 
 </body>
