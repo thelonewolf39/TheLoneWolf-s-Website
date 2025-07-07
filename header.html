@@ -1,37 +1,40 @@
-<!-- header.html -->
 <header class="sticky top-0 z-50 bg-gradient-to-r from-red-600 to-red-800 text-white shadow-md">
-  <div class="max-w-6xl mx-auto px-4 flex items-center justify-between py-2 md:py-3">
+  <div class="max-w-6xl mx-auto px-4 flex items-center gap-4 justify-between py-2 md:py-3">
+
     <h1 class="text-lg md:text-2xl font-bold tracking-wide select-none">
-      <a href="index.html">The Lone Wolf</a>
+      <a href="index.html">The Lone Wolf</a>
     </h1>
 
-    <!-- simple nav -->
-    <nav class="space-x-4 text-sm md:text-base font-semibold">
-      <a href="videos.html"     class="hover:underline">Videos</a>
-      <a href="shouldidoit.html"   class="hover:underline">Projects</a>
+    <!-- main nav -->
+    <nav class="space-x-4 text-sm md:text-base font-semibold flex-1 text-center md:text-left">
+      <a href="videos.html"      class="hover:underline">Videos</a>
+      <a href="shouldidoit.html" class="hover:underline">Projects</a>
       <a href="doanddont.html"   class="hover:underline">Do’s & Don’ts</a>
     </nav>
-  </div>
 
-  <!-- Accessibility Menu -->
-<div class="relative z-50 ml-auto">
-  <button id="accessMenuBtn" aria-label="Open accessibility menu"
-    class="p-2 rounded-md text-white bg-primary hover:bg-red-700 focus:outline-none">
-    ☰
-  </button>
+    <!-- accessibility hamburger (now in the flex row) -->
+    <div class="relative">
+      <button id="accessMenuBtn" aria-label="Open accessibility menu"
+        class="p-2 rounded-md bg-primary hover:bg-red-700 focus:outline-none">
+        ☰
+      </button>
 
-  <div id="accessMenu" class="hidden absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg shadow-lg p-4 space-y-3 transition-all duration-300">
-    <h2 class="text-sm font-semibold border-b pb-2">Accessibility Settings</h2>
+      <div id="accessMenu"
+           class="hidden absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800
+                  text-gray-800 dark:text-gray-100 rounded-lg shadow-lg
+                  p-4 space-y-3 transition duration-200">
+        <h2 class="text-sm font-semibold border-b pb-2">Accessibility Settings</h2>
 
-    <button id="themeToggle" class="w-full text-left hover:underline">🌗 Toggle Dark Mode</button>
-    <button id="cbToggle" class="w-full text-left hover:underline">🎨 Toggle Colorblind Mode</button>
-    <button id="aosToggle" class="w-full text-left hover:underline">🎞️ Toggle Animations</button>
+        <button id="themeToggle" class="w-full text-left hover:underline">🌗 Toggle Dark Mode</button>
+        <button id="cbToggle"    class="w-full text-left hover:underline">🎨 Toggle Colorblind Mode</button>
+        <button id="aosToggle"   class="w-full text-left hover:underline">🎞️ Toggle Animations</button>
 
-    <div class="pt-2 border-t">
-      <p class="text-xs">🌍 Change Language:</p>
-      <div id="google_translate_element" class="mt-1"></div>
+        <div class="pt-2 border-t">
+          <p class="text-xs">🌍 Change Language:</p>
+          <div id="google_translate_element" class="mt-1"></div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
+  </div>
 </header>
