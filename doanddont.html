@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Do's & Don'ts - The Lone Wolf</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+  </style>
+</head>
+<body class="bg-white text-gray-800">
+  <div id="header-placeholder"></div>
+
+  <main class="max-w-4xl mx-auto px-6 py-16">
+    <h1 class="text-4xl font-bold text-center mb-8">Do's & Don'ts 🐺</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-green-100 border-l-4 border-green-500 p-6 rounded">
+        <h2 class="text-2xl font-semibold mb-2">✅ Do's</h2>
+        <ul class="list-disc pl-5 text-green-800">
+          <li>Be awesome 🤘</li>
+          <li>Subscribe to the channel 😎</li>
+          <li>Share your favorite video 📢</li>
+          <li>Vote on ideas ⭐</li>
+          <li>Hydrate 💧 and stretch 🧘</li>
+        </ul>
+      </div>
+
+      <div class="bg-red-100 border-l-4 border-red-500 p-6 rounded">
+        <h2 class="text-2xl font-semibold mb-2">🚫 Don'ts</h2>
+        <ul class="list-disc pl-5 text-red-800">
+          <li>Spam the request form 😤</li>
+          <li>Steal content 👎</li>
+          <li>Forget your tail at home 🐾</li>
+          <li>Drink glitter (seriously, no) ✨🚫</li>
+          <li>Mess with the wolf 🐺💢</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-gray-900 text-gray-300 py-6 text-center">
+    &copy; <span id="year"></span> The Lone Wolf. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    fetch("header.html").then(res => res.text()).then(html => {
+      document.getElementById("header-placeholder").innerHTML = html;
+    });
+  </script>
+</body>
+</html>
