@@ -24,16 +24,35 @@
     </script>
 
     <style>
-    /* Sticky header style - stays at top on scroll */
-    .header {
-      position: sticky;
-      top: 0;
-      background-color: #f1f1f1;
-      padding: 20px;
-      text-align: center;
-      z-index: 1000; /* above other content */
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
+    /.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(90deg, #ff0000 0%, #cc0000 100%);
+  padding: 1rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3);
+  color: white;
+  font-weight: 700;
+  font-size: 1.75rem;
+  letter-spacing: 0.05em;
+  font-family: 'Poppins', sans-serif;
+  user-select: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.header p {
+  font-weight: 400;
+  font-size: 1rem;
+  margin-top: 0.25rem;
+  opacity: 0.9;
+  font-family: 'Poppins', sans-serif;
+}
+
+.header:hover {
+  box-shadow: 0 6px 14px rgba(255, 0, 0, 0.5);
+}
+
 
     body {
       scroll-margin-top: 80px; /* for in-page anchor spacing below sticky header */
