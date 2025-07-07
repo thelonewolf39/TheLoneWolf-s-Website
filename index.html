@@ -24,6 +24,60 @@
     </script>
 
     <style>
+  /* ---------- COLOR‑BLIND + DARK MODE ---------- */
+  html {
+    --bg: #ffffff;
+    --text: #000000;
+    --primary: #ff0000; /* YouTube red (default) */
+    --secondary: #e5e5e5;
+  }
+
+  html.dark {
+    --bg: #1a1a1a;
+    --text: #e6e6e6;
+    --primary: #ff4d4d;
+    --secondary: #333333;
+  }
+
+  html.colorblind {
+    --bg: #ffffff;
+    --text: #000000;
+    --primary: #0072B2;   /* blue */
+    --secondary: #E69F00; /* orange */
+    --accent: #009E73;
+    --alert: #D55E00;
+  }
+
+  html.dark.colorblind {
+    --bg: #1e1e1e;
+    --text: #f5f5f5;
+    --primary: #56B4E9;   /* sky blue */
+    --secondary: #E69F00;
+    --accent: #009E73;
+    --alert: #F0E442;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+  }
+
+  .bg-primary {
+    background-color: var(--primary) !important;
+  }
+  .text-primary {
+    color: var(--primary) !important;
+  }
+
+  /* AOS fallback if disabled */
+  body.aos-off [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+</style>
+
+    <style>
     .header {
   position: sticky !important;
   top: 0 !important;
