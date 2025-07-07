@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Lone Wolf - Videos</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#ff0000"
+          },
+          fontFamily: {
+            poppins: ["Poppins", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: white;
+      color: #333;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-white">
+  
+  <header class="sticky top-0 z-50 bg-gradient-to-r from-red-600 to-red-800 text-white font-bold text-3xl tracking-wide font-poppins select-none p-5 text-center shadow-lg">
+    The Lone Wolf - Videos
+  </header>
+  
+  <main class="max-w-6xl mx-auto p-6">
+    <section id="videosGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Video cards will be inserted here -->
+    </section>
+  </main>
+  
+  <footer class="bg-gray-900 text-gray-300 py-6 mt-12 text-center">
+    &copy; <span id="year"></span> The Lone Wolf. All rights reserved.
+  </footer>
+  
+  <script>
+    // Update footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+    
+    document.addEventListener("DOMContentLoaded", () => {
+      const CHANNEL_ID = "UCo3Z-t-u4yfE5omo8Q_cl5Q";
+      const PROXY = "https://corsproxy.io/?";
+      const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+      const videosGrid = document.getElementById("videosGrid");
+      
+      async function loadVideos() {
+        try {
+          const response = await fetch(PROXY + encodeURIComponent(FEED_URL));
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          const text = await response.text();
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(text, "application/xml");
+          const entries = xml.querySelectorAll("entry");
+          
+          if (!entries.length) {
+            videosGrid.innerHTML = "<p class='text-center text-gray-500'>No videos found.</p>";
+            return;
+          }
+          
+          videosGrid.innerHTML = ""; // Clear loading or old content
+          
+          entries.forEach(entry => {
+            const videoId = entry.querySelector("id").textContent.split(":").pop();
+            const title = entry.querySelector("title").textContent;
+            const published = new Date(entry.querySelector("published").textContent).toLocaleDateString();
+            const description = entry.querySelector("media\\:description, description")?.textContent || "";
+            const thumbnailUrl = entry.querySelector("media\\:thumbnail")?.getAttribute("url") || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            
+            // Create card element
+            const card = document.createElement("article");
+            card.className = "bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300";
+            
+            card.innerHTML = `
+              <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer" class="block">
+                <img src="${thumbnailUrl}" alt="${title} thumbnail" class="w-full aspect-video object-cover" loading="lazy" />
+              </a>
+              <div class="p-4">
+                <h3 class="text-lg font-semibold mb-2">${title}</h3>
+                <p class="text-sm text-gray-500 mb-3">${published}</p>
+                <p class="text-gray-700 text-sm line-clamp-3">${description}</p>
+                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer" class="inline-block mt-4 text-primary font-semibold hover:underline">
+                  Watch on YouTube &rarr;
+                </a>
+              </div>
+            `;
+            
+            videosGrid.appendChild(card);
+          });
+          
+        } catch (err) {
+          console.error("Failed to load videos:", err);
+          videosGrid.innerHTML = `<p class="text-center text-red-500">Failed to load videos. Please try again later.</p>`;
+        }
+      }
+      
+      loadVideos();
+    });
+  </script>
+  
+</body>
+</html>
