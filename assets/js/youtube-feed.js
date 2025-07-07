@@ -1,26 +1,27 @@
-/* Replace this once with your own UC… channel ID */
-const CHANNEL_ID = "UCo3Z-t-u4yfE5omo8Q_cl5Q";
+document.addEventListener("DOMContentLoaded", () => {
+  const CHANNEL_ID = "UCo3Z-t-u4yfE5omo8Q_cl5Q";
+  const PROXY = "https://api.allorigins.win/raw?url=";
+  const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+  const iframe = document.getElementById("latestYtVideo");
 
-/* Shared helpers ------------------------------------------------------- */
-const FEED   = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-const PROXY  = "https://api.allorigins.win/raw?url=";      // free CORS passthrough
+  async function loadLatestVideo() {
+    try {
+      const response = await fetch(PROXY + encodeURIComponent(FEED_URL));
+      const text = await response.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, "application/xml");
+      const entry = xml.querySelector("entry > id");
+      if (entry) {
+        const videoId = entry.textContent.split(":").pop();
+        iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0`;
+      } else {
+        console.warn("No videos found in feed");
+      }
+    } catch (err) {
+      console.error("Error loading latest video:", err);
+    }
+  }
 
-async function fetchFeed() {
-  const xmlText = await fetch(PROXY + encodeURIComponent(FEED)).then(r => r.text());
-  return new DOMParser().parseFromString(xmlText, "application/xml");
-}
-
-/* Export tiny utilities */
-export async function getLatestVideoId() {
-  const xml = await fetchFeed();
-  return xml.querySelector("entry > id")?.textContent.split(":").pop() ?? null;
-}
-
-export async function getRecentVideos(max = 10) {
-  const xml = await fetchFeed();
-  return [...xml.querySelectorAll("entry")].slice(0, max).map(e => ({
-    id:  e.querySelector("id").textContent.split(":").pop(),
-    title: e.querySelector("title").textContent,
-    published: new Date(e.querySelector("published").textContent),
-  }));
-}
+  loadLatestVideo();
+  setInterval(loadLatestVideo, 1000 * 60 * 30); // Refresh every 30 mins
+});
