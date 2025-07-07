@@ -24,21 +24,29 @@
     </script>
 
     <style>
-.header {
-  position: sticky;
-  top: 0;
-  background-color: #f1f1f1;
-  padding: 20px;
-  text-align: center;
-}
-</style>
+    /* Sticky header style - stays at top on scroll */
+    .header {
+      position: sticky;
+      top: 0;
+      background-color: #f1f1f1;
+      padding: 20px;
+      text-align: center;
+      z-index: 1000; /* above other content */
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    body {
+      scroll-margin-top: 80px; /* for in-page anchor spacing below sticky header */
+    }
+    </style>
 </head>
 <body class="font-[Poppins] text-gray-800 bg-white">
 
+    <!-- Sticky header -->
     <div class="header">
-  <h1>The Lone Wolf</h1>
-  <p>A brief description of your website.</p>
-</div>
+      <h1>The Lone Wolf</h1>
+      <p>A brief description of your website.</p>
+    </div>
 
     <!-- Hero -->
     <header class="bg-gradient-to-br from-primary to-red-600 text-white py-20">
@@ -52,15 +60,18 @@
         </div>
     </header>
 
-    <!-- Featured Video -->
+    <!-- Featured Video - replaced with dynamic latest video -->
     <section class="py-16 bg-gray-50">
         <div class="container mx-auto px-6 text-center">
             <h2 class="text-3xl font-semibold mb-8">Check Out Our Latest Video</h2>
             <div class="relative pb-[56.25%] h-0 max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl">
-                <iframe class="absolute inset-0 w-full h-full"
-                        src="https://www.youtube.com/embed/YzFsDUtcQno?si=xfrW4jYwScnrQjzY"
+                <!-- Dynamic iframe - starts blank, will be updated by JS -->
+                <iframe id="latestYtVideo" class="absolute inset-0 w-full h-full"
+                        src="about:blank"
                         frameborder="0"
-                        allowfullscreen></iframe>
+                        allowfullscreen
+                        title="Latest YouTube Video">
+                </iframe>
             </div>
         </div>
     </section>
@@ -123,6 +134,8 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
+
     <script>
         // Buttons
         const buttons = document.querySelectorAll(".btn-select");
@@ -157,5 +170,35 @@
         // Dynamic year in footer
         document.getElementById("year").textContent = new Date().getFullYear();
     </script>
+
+    <!-- Latest video fetcher script -->
+    <script>
+      const CHANNEL_ID = "UCo3Z-t-u4yfE5omo8Q_cl5Q"; // <-- Replace with your real channel ID if needed
+      const PROXY = "https://api.allorigins.win/raw?url=";
+      const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+      const iframe = document.getElementById("latestYtVideo");
+
+      async function loadLatestVideo() {
+        try {
+          const response = await fetch(PROXY + encodeURIComponent(FEED_URL));
+          const text = await response.text();
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(text, "application/xml");
+          const entry = xml.querySelector("entry > id");
+          if (entry) {
+            const videoId = entry.textContent.split(":").pop();
+            iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0`;
+          } else {
+            console.warn("No videos found in feed");
+          }
+        } catch (err) {
+          console.error("Error loading latest video:", err);
+        }
+      }
+
+      loadLatestVideo();
+      setInterval(loadLatestVideo, 1000 * 60 * 30); // Refresh every 30 minutes
+    </script>
+
 </body>
 </html>
