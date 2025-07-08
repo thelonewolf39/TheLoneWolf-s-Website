@@ -1,36 +1,37 @@
-name: Update Folder Structure
+name: Update YouTube Videos JSON
 
 on:
-  push:
-    paths:
-      - '**'
-    branches: master
+  schedule:
+    - cron: '0 */6 * * *'  # every 6 hours
   workflow_dispatch:
 
 jobs:
-  build:
+  update-videos:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repo with write permissions
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false  # Important for push with GITHUB_TOKEN
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-    - name: Run folder structure script
-      run: |
-        node tools/generate-structure.js
+      - name: Install dependencies
+        run: npm install xml2js
 
-    - name: Commit folder structure
-      uses: stefanzweifel/git-auto-commit-action@v5
-      with:
-        commit_message: "ci: update project folder structure"
-        file_pattern: 'project-structure.md'
-        commit_user_name: github-actions[bot]
-        commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-        commit_author: thelonewolf39 <117017247+thelonewolf39@users.noreply.github.com>
-      env:
-        GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+      - name: Fetch latest videos and write JSON
+        run: node tools/fetch-videos.js
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/videos.json
+          git diff --cached --quiet || git commit -m "ci: update videos.json"
+          git push origin HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
