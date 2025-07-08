@@ -1,47 +1,77 @@
-<section class="py-16 bg-gray-100">
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project Ideas - The Lone Wolf</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project Voting</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { font-family: 'Poppins', sans-serif; }
-  </style>
 </head>
-<body class="bg-white text-gray-800">
-  <div id="header-placeholder"></div>
+<body class="bg-white text-gray-800 font-sans">
 
-  <main class="max-w-6xl mx-auto px-6 py-16">
-    <section class="text-center mb-16">
-      <h1 class="text-4xl font-bold mb-4">Rate My Project Ideas ⭐</h1>
-      <p class="text-lg text-gray-600">
-        I'm thinking about some future ideas. Want to help choose what I do next?
-        You can rate them from 1 to 5 stars!
-      </p>
-    </section>
+  <header class="bg-red-700 text-white p-4 text-center">
+    <h1 class="text-2xl font-bold">Rate Future Projects!</h1>
+    <p class="text-sm">Click stars to rate from 1 to 5</p>
+    <a href="index.html" class="text-white underline text-sm">← Back to Home</a>
+  </header>
 
-    <!-- Common Ninja Widget Placeholder -->
-    <div id="commonninja_widget_placeholder" class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-gray-400 italic text-center">
-      ⭐ Your interactive rating widget will appear here once you connect Common Ninja ⭐
+  <main class="max-w-4xl mx-auto p-6 space-y-8">
+
+    <!-- Example Idea Card -->
+    <div class="project-card border p-4 rounded shadow" data-id="tail-costume">
+      <h2 class="text-xl font-semibold mb-2">Make a realistic wolf tail costume?</h2>
+      <div class="stars flex space-x-2 text-2xl text-yellow-400 cursor-pointer">
+        <span data-star="1">☆</span>
+        <span data-star="2">☆</span>
+        <span data-star="3">☆</span>
+        <span data-star="4">☆</span>
+        <span data-star="5">☆</span>
+      </div>
+      <p class="message text-sm mt-1 text-gray-500"></p>
     </div>
 
-    <!-- Paste your Common Ninja embed script below this comment -->
-    <!-- Example: <script src="https://cdn.commoninja.com/sdk/latest/your-widget-code.js"></script> -->
+    <div class="project-card border p-4 rounded shadow" data-id="fursuit-head">
+      <h2 class="text-xl font-semibold mb-2">Try sculpting a fursuit head?</h2>
+      <div class="stars flex space-x-2 text-2xl text-yellow-400 cursor-pointer">
+        <span data-star="1">☆</span>
+        <span data-star="2">☆</span>
+        <span data-star="3">☆</span>
+        <span data-star="4">☆</span>
+        <span data-star="5">☆</span>
+      </div>
+      <p class="message text-sm mt-1 text-gray-500"></p>
+    </div>
+
+    <!-- Add more ideas below -->
+    
   </main>
 
-  <footer class="bg-gray-900 text-gray-300 py-6 text-center">
-    &copy; <span id="year"></span> The Lone Wolf. All rights reserved.
-  </footer>
-
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-    fetch("header.html").then(res => res.text()).then(html => {
-      document.getElementById("header-placeholder").innerHTML = html;
+    const ratings = JSON.parse(localStorage.getItem('ratings') || '{}');
+
+    document.querySelectorAll('.project-card').forEach(card => {
+      const id = card.dataset.id;
+      const stars = card.querySelectorAll('[data-star]');
+      const msg = card.querySelector('.message');
+
+      function renderStars(rating) {
+        stars.forEach(s => {
+          s.textContent = s.dataset.star <= rating ? '★' : '☆';
+        });
+        msg.textContent = rating ? `You rated this ${rating} star${rating > 1 ? 's' : ''}.` : '';
+      }
+
+      // Load existing rating
+      if (ratings[id]) renderStars(ratings[id]);
+
+      stars.forEach(star => {
+        star.addEventListener('click', () => {
+          const rating = Number(star.dataset.star);
+          ratings[id] = rating;
+          localStorage.setItem('ratings', JSON.stringify(ratings));
+          renderStars(rating);
+        });
+      });
     });
   </script>
 </body>
