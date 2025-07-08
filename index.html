@@ -8,7 +8,6 @@
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -186,12 +185,26 @@
   <button id="accessibility-button" aria-haspopup="true" aria-expanded="false" aria-controls="accessibility-menu" aria-label="Toggle accessibility menu">☰</button>
 </header>
 
-<!-- Accessibility menu -->
-<nav id="accessibility-menu" class="hidden" role="region" aria-label="Accessibility settings" tabindex="-1">
-  <button id="themeToggle" type="button" aria-pressed="false">🌗 Toggle Dark Mode</button>
-  <button id="cbToggle" type="button" aria-pressed="false">🎨 Toggle Colorblind Mode</button>
-  <button id="aosToggle" type="button" aria-pressed="true">🎞️ Toggle Animations</button>
-</nav>
+<div class="relative z-50 ml-auto" style="position: relative;">
+  <button id="accessMenuBtn" aria-label="Open accessibility menu"
+    class="p-2 rounded-md text-white bg-primary hover:bg-red-700 focus:outline-none">
+    ☰
+  </button>
+
+  <div id="accessMenu" class="hidden absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg shadow-lg p-4 space-y-3 transition-all duration-300"
+       style="top: 100%; z-index: 9999;">
+    <h2 class="text-sm font-semibold border-b pb-2">Accessibility Settings</h2>
+
+    <button id="themeToggle" class="w-full text-left hover:underline">🌗 Toggle Dark Mode</button>
+    <button id="cbToggle" class="w-full text-left hover:underline">🎨 Toggle Colorblind Mode</button>
+    <button id="aosToggle" class="w-full text-left hover:underline">🎞️ Toggle Animations</button>
+
+    <div class="pt-2 border-t">
+      <p class="text-xs">🌍 Change Language:</p>
+      <div id="google_translate_element" class="mt-1"></div>
+    </div>
+  </div>
+</div>
 
 <!-- Hero -->
 <header class="bg-gradient-to-br from-primary to-red-600 text-white py-20">
@@ -336,159 +349,84 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-<!-- Accessibility toggles script -->
+<!-- AOS CSS and JS (CDN) -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const accessBtn = document.getElementById('accessibility-button');
-    const accessMenu = document.getElementById('accessibility-menu');
+  // Accessibility menu toggle
+  const accessMenuBtn = document.getElementById('accessMenuBtn');
+  const accessMenu = document.getElementById('accessMenu');
 
-    // Toggle menu visibility
-    accessBtn.addEventListener('click', () => {
-      const isOpen = accessMenu.classList.toggle('open');
-      accessMenu.classList.toggle('hidden', !isOpen);
-      accessBtn.setAttribute('aria-expanded', isOpen);
-      if (isOpen) {
-        accessMenu.focus();
-      }
-    });
+  accessMenuBtn.addEventListener('click', () => {
+    accessMenu.classList.toggle('hidden');
+  });
 
-    // Dark Mode Toggle
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-      const isDark = document.documentElement.classList.contains('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      themeToggle.setAttribute('aria-pressed', isDark);
-    });
-    // On load apply theme
-    if (localStorage.getItem('theme') === 'dark') {
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!accessMenu.contains(e.target) && e.target !== accessMenuBtn) {
+      accessMenu.classList.add('hidden');
+    }
+  });
+
+  // LocalStorage keys
+  const keys = {
+    dark: 'prefersDark',
+    cb: 'prefersColorblind',
+    aos: 'prefersAOS',
+  };
+
+  // Apply saved preferences on load
+  function applyPreferences() {
+    if (localStorage.getItem(keys.dark) === 'true') {
       document.documentElement.classList.add('dark');
-      themeToggle.setAttribute('aria-pressed', true);
-    }
-
-    // Colorblind Mode Toggle
-    const cbToggle = document.getElementById('cbToggle');
-    cbToggle.addEventListener('click', () => {
-      document.documentElement.classList.toggle('colorblind');
-      const isCB = document.documentElement.classList.contains('colorblind');
-      localStorage.setItem('colorblind', isCB ? 'true' : 'false');
-      cbToggle.setAttribute('aria-pressed', isCB);
-    });
-    // On load apply colorblind mode
-    if (localStorage.getItem('colorblind') === 'true') {
-      document.documentElement.classList.add('colorblind');
-      cbToggle.setAttribute('aria-pressed', true);
-    }
-
-    // AOS Toggle (animation)
-    const aosToggle = document.getElementById('aosToggle');
-    let aosEnabled = true;
-
-    function enableAOS() {
-      if(window.AOS) window.AOS.init();
-      document.body.classList.remove('aos-off');
-      aosEnabled = true;
-      localStorage.setItem('aosEnabled', 'true');
-      aosToggle.setAttribute('aria-pressed', true);
-    }
-
-    function disableAOS() {
-      document.body.classList.add('aos-off');
-      aosEnabled = false;
-      localStorage.setItem('aosEnabled', 'false');
-      aosToggle.setAttribute('aria-pressed', false);
-    }
-
-    aosToggle.addEventListener('click', () => {
-      if (aosEnabled) {
-        disableAOS();
-      } else {
-        enableAOS();
-      }
-    });
-
-    // On load check AOS preference
-    if (localStorage.getItem('aosEnabled') === 'false') {
-      disableAOS();
     } else {
-      enableAOS();
-    }
-  });
-</script>
-
-<!-- Ad Blocker Warning Banner -->
-<div id="adblock-warning" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 max-w-xl bg-yellow-100 border border-yellow-400 text-yellow-900 rounded-lg shadow-lg px-6 py-4 flex items-center space-x-4 z-50">
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20.5a8.5 8.5 0 100-17 8.5 8.5 0 000 17z" />
-  </svg>
-  <p class="flex-grow text-sm md:text-base">
-    Hello! This page doesn’t really like your ad blocker... kinda wants to eat it! 🍽️<br />
-    Please consider whitelisting us for a smoother experience.
-  </p>
-  <button id="close-adblock-warning" aria-label="Close warning" class="text-yellow-900 hover:text-yellow-700 focus:outline-none font-bold text-xl">
-    &times;
-        </button>
-</div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    function showWarning() {
-      const warning = document.getElementById('adblock-warning');
-      if (!warning.classList.contains('hidden')) return;
-      warning.classList.remove('hidden');
-      document.getElementById('close-adblock-warning').addEventListener('click', () => {
-        warning.classList.add('hidden');
-      });
+      document.documentElement.classList.remove('dark');
     }
 
-    // 1. Bait div detection
-    const bait = document.createElement('div');
-    bait.className = 'adsbox ad-banner ad-container';
-    bait.style.position = 'absolute';
-    bait.style.left = '-9999px';
-    bait.style.height = '1px';
-    bait.style.width = '1px';
-    bait.style.overflow = 'hidden';
-    document.body.appendChild(bait);
+    if (localStorage.getItem(keys.cb) === 'true') {
+      document.documentElement.classList.add('colorblind');
+    } else {
+      document.documentElement.classList.remove('colorblind');
+    }
 
-    setTimeout(() => {
-      const baitStyles = window.getComputedStyle(bait);
-      const baitBlocked =
-        baitStyles.getPropertyValue('display') === 'none' ||
-        baitStyles.getPropertyValue('visibility') === 'hidden' ||
-        bait.offsetParent === null ||
-        bait.offsetHeight === 0 ||
-        bait.offsetWidth === 0;
+    if (localStorage.getItem(keys.aos) === 'false') {
+      document.body.classList.add('aos-off');
+      AOS.init({ disable: true });
+    } else {
+      document.body.classList.remove('aos-off');
+      AOS.init();
+    }
+  }
 
-      document.body.removeChild(bait);
+  applyPreferences();
 
-      if (baitBlocked) {
-        showWarning();
-        return; // no need to check ad URL if bait div blocked
-      }
-
-      // 2. Check blocking of known ad URL by loading image
-      const testImg = document.createElement('img');
-      // This is a common ad domain URL used for detection (you can tweak this if needed)
-      testImg.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-      testImg.style.position = 'absolute';
-      testImg.style.left = '-9999px';
-      testImg.style.height = '1px';
-      testImg.style.width = '1px';
-
-      testImg.onerror = () => showWarning();
-      testImg.onload = () => {}; // loaded means no adblock here
-
-      document.body.appendChild(testImg);
-      // Remove the image after some time so no clutter
-      setTimeout(() => {
-        if (testImg.parentNode) {
-          testImg.parentNode.removeChild(testImg);
-        }
-      }, 3000);
-    }, 200);
+  // Toggle buttons
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem(keys.dark, isDark);
   });
-</script>
 
+  document.getElementById('cbToggle').addEventListener('click', () => {
+    const isCB = document.documentElement.classList.toggle('colorblind');
+    localStorage.setItem(keys.cb, isCB);
+  });
+
+  document.getElementById('aosToggle').addEventListener('click', () => {
+    const isAOSOff = document.body.classList.toggle('aos-off');
+    localStorage.setItem(keys.aos, !isAOSOff);
+    if (isAOSOff) {
+      AOS.init({ disable: true });
+    } else {
+      AOS.init();
+    }
+  });
+
+  // Google Translate
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+  }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
