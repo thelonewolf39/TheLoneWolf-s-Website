@@ -1,24 +1,28 @@
 name: Update Latest YouTube Video
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:   # Manual trigger
   schedule:
-    - cron: '0 * * * *'  # every hour (you can remove this if you want manual-only)
+    - cron: '0 * * * *'  # (Optional) every hour
 
 jobs:
   update:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
-      - name: Run video fetcher script
+      - name: Run YouTube fetch script
         run: node tools/fetch-videos.js
 
-      - name: Commit and push changes
+      - name: Commit and push updated JSON
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "ci: update latest video"
+          commit_message: 'ci: update latest YouTube video JSON'
+          branch: main   # Change if your default branch is different
