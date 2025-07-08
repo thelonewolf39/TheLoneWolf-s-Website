@@ -1,61 +1,64 @@
-const fs = require('fs');
 const https = require('https');
-const xml2js = require('xml2js');
+const fs = require('fs');
+const path = require('path');
 
-const CHANNEL_ID = 'UCo3Z-t-u4yfE5omo8Q_cl5Q'; // Your YouTube channel ID
-const MAX_RESULTS = 10;
+const channelId = 'UCo3Z-t-u4yfE5omo8Q_cl5Q'; // Your channel ID
+const maxResults = 5; // number of videos to fetch
 
-const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-
-function fetchXML(url) {
+// This function fetches the channel uploads RSS feed in XML and parses it
+function fetchVideos() {
   return new Promise((resolve, reject) => {
+    const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+
     https.get(url, (res) => {
       let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data));
-      res.on('error', reject);
-    });
-  });
-}
 
-async function parseXML(xml) {
-  return new Promise((resolve, reject) => {
-    xml2js.parseString(xml, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
+      if (res.statusCode !== 200) {
+        reject(new Error(`Request Failed. Status Code: ${res.statusCode}`));
+        res.resume();
+        return;
+      }
+
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          // parse XML (simple way, or you can use xml2js)
+          const parseString = require('xml2js').parseString;
+          parseString(data, (err, result) => {
+            if (err) reject(err);
+
+            const entries = result.feed.entry || [];
+            const videos = entries.slice(0, maxResults).map(e => ({
+              id: e['yt:videoId'][0],
+              title: e.title[0],
+              published: e.published[0],
+              link: e.link[0].$.href,
+            }));
+
+            resolve(videos);
+          });
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }).on('error', (e) => reject(e));
   });
 }
 
 async function main() {
   try {
-    const xml = await fetchXML(RSS_URL);
-    const parsed = await parseXML(xml);
+    const videos = await fetchVideos();
 
-    const entries = parsed.feed.entry || [];
-    const videos = entries.slice(0, MAX_RESULTS).map(entry => ({
-      videoId: entry['yt:videoId'][0],
-      title: entry.title[0],
-      link: entry.link[0].$.href,
-      publishedAt: entry.published[0],
-      thumbnail: `https://i.ytimg.com/vi/${entry['yt:videoId'][0]}/hqdefault.jpg`,
-      description: entry['media:group'][0]['media:description'][0]
-    }));
-
-    if (videos.length === 0) {
-      console.error('No videos found in RSS feed.');
+    if (!videos || videos.length === 0) {
+      console.error('No videos found');
       process.exit(1);
     }
 
-    // Save latest video (first one)
-    fs.writeFileSync('data/latest-video.json', JSON.stringify(videos[0], null, 2));
-
-    // Save all videos
-    fs.writeFileSync('data/videos.json', JSON.stringify(videos, null, 2));
-
-    console.log('Successfully updated latest-video.json and videos.json');
+    const outputPath = path.join(__dirname, '..', 'data', 'videos.json');
+    fs.writeFileSync(outputPath, JSON.stringify(videos, null, 2));
+    console.log('Videos JSON updated successfully');
   } catch (error) {
-    console.error('Error fetching or parsing RSS feed:', error);
+    console.error('Failed to fetch videos:', error);
     process.exit(1);
   }
 }
