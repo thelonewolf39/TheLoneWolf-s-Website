@@ -1,34 +1,35 @@
-const https = require('https');
 const fs = require('fs');
+const fetch = require('node-fetch');
 const xml2js = require('xml2js');
 
-const channelId = 'UCo3Z-t-u4yfE5omo8Q_cl5Q'; // your channel ID
+const channelId = 'UCo3Z-t-u4yfE5omo8Q_cl5Q';
 const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+const outputPath = 'data/videos.json';
 
-https.get(rssUrl, (res) => {
-  let data = '';
-  res.on('data', chunk => data += chunk);
-  res.on('end', () => {
-    xml2js.parseString(data, (err, result) => {
-      if (err) {
-        console.error('Failed to parse XML', err);
-        return;
-      }
-      try {
-        const entries = result.feed.entry || [];
-        const videos = entries.map(entry => ({
-          id: entry['yt:videoId'][0],
-          title: entry.title[0],
-          published: entry.published[0]
-        }));
+async function fetchYouTubeVideos() {
+  try {
+    const res = await fetch(rssUrl);
+    const xml = await res.text();
 
-        fs.writeFileSync('data/videos.json', JSON.stringify(videos, null, 2));
-        console.log('videos.json updated from RSS feed!');
-      } catch (e) {
-        console.error('Error extracting videos', e);
-      }
-    });
-  });
-}).on('error', (e) => {
-  console.error('Error fetching RSS:', e);
-});
+    const parser = new xml2js.Parser();
+    const result = await parser.parseStringPromise(xml);
+
+    const entries = result.feed.entry || [];
+
+    const videos = entries.map(entry => ({
+      id: entry['yt:videoId'][0],
+      title: entry.title[0],
+      published: entry.published[0],
+      link: entry.link[0].$.href
+    }));
+
+    // Save to JSON
+    fs.writeFileSync(outputPath, JSON.stringify(videos, null, 2));
+    console.log(`✅ Saved ${videos.length} videos to ${outputPath}`);
+  } catch (err) {
+    console.error('❌ Failed to fetch or parse videos:', err);
+    process.exit(1);
+  }
+}
+
+fetchYouTubeVideos();
