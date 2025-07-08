@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          persist-credentials: true   # Important: allows push with GITHUB_TOKEN
+          token: ${{secrets.PAT_TOKEN}}   # Important: allows push with GITHUB_TOKEN
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
