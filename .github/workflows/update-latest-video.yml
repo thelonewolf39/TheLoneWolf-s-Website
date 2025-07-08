@@ -1,9 +1,9 @@
 name: Update Latest YouTube Video
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '0 * * * *'   # every hour
-  workflow_dispatch:        # manual trigger button
+    - cron: '0 * * * *'  # every hour (you can remove this if you want manual-only)
 
 jobs:
   update:
@@ -15,13 +15,10 @@ jobs:
         with:
           node-version: 20
 
-      - name: Fetch all videos
-  run: |
-    npm install xml2js
-    node tools/fetch-videos.js
+      - name: Run video fetcher script
+        run: node tools/fetch-videos.js
 
-      - name: Commit & push if video changed
+      - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "ci: update latest video"
-          branch: ${{ github.ref }}
