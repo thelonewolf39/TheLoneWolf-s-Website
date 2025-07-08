@@ -1,0 +1,25 @@
+name: Update Latest YouTube Video
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # every hour
+  workflow_dispatch:        # manual trigger button
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run fetch script
+        run: node tools/fetch-latest-video.js
+
+      - name: Commit & push if video changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "ci: update latest video"
+          branch: ${{ github.ref }}
