@@ -15,8 +15,10 @@ jobs:
         with:
           node-version: 20
 
-      - name: Run fetch script
-        run: node tools/fetch-latest-video.js
+      - name: Fetch all videos
+  run: |
+    npm install xml2js
+    node tools/fetch-videos.js
 
       - name: Commit & push if video changed
         uses: stefanzweifel/git-auto-commit-action@v5
