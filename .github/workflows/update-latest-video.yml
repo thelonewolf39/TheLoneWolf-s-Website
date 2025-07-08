@@ -25,4 +25,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'ci: update latest YouTube video JSON'
-          branch: main   # Change if your default branch is different
+          branch: master   # Change if your default branch is different
