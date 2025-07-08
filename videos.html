@@ -52,7 +52,7 @@
   </script>
 
   <script>
-fetch('/data/videos.json')
+fetch('data/videos.json')
   .then(res => res.json())
   .then(videos => {
     const container = document.getElementById('videos-container');
