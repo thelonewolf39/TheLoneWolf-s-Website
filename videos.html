@@ -85,6 +85,62 @@ fetch('data/videos.json')
         .catch(console.error);
     });
   </script>
+
+  <script>
+const channelId = "UCo3Z-t-u4yfE5omo8Q_cl5Q"; // Your YouTube channel ID
+const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+
+// Format publish date
+function formatDate(iso) {
+  const date = new Date(iso);
+  return date.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+
+fetch(feedUrl)
+  .then(res => res.text())
+  .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+  .then(data => {
+    const entries = [...data.querySelectorAll("entry")];
+    const container = document.getElementById("video-list");
+
+    if (!container || !entries.length) {
+      console.error("No video list container or no entries found");
+      return;
+    }
+
+    entries.forEach(entry => {
+      const id = entry.querySelector("yt\\:videoId").textContent;
+      const title = entry.querySelector("title").textContent;
+      const published = entry.querySelector("published").textContent;
+
+      const card = document.createElement("div");
+      card.className = "bg-white rounded-xl shadow p-4 hover:shadow-lg transition";
+
+      card.innerHTML = `
+        <div class="relative pb-[56.25%] h-0 mb-4 overflow-hidden rounded-lg">
+          <iframe class="absolute inset-0 w-full h-full rounded-lg"
+                  src="https://www.youtube.com/embed/${id}"
+                  frameborder="0"
+                  allowfullscreen></iframe>
+        </div>
+        <h3 class="text-xl font-semibold mb-2">${title}</h3>
+        <p class="text-sm text-gray-500">Published on ${formatDate(published)}</p>
+      `;
+
+      container.appendChild(card);
+    });
+  })
+  .catch(err => {
+    console.error("Failed to load YouTube RSS feed", err);
+    const fallback = document.getElementById("video-list");
+    if (fallback) fallback.innerHTML = `<p class="text-red-500">⚠️ Failed to load videos. Please try again later.</p>`;
+  });
+</script>
+
 </body>
 
 </body>
