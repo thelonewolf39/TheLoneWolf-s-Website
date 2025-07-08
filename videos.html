@@ -39,9 +39,7 @@
   <div id="header-placeholder"></div>
   
   <main class="max-w-6xl mx-auto p-6">
-    <section id="videosGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Video cards will be inserted here -->
-    </section>
+   <div id="videosGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4 py-10"></div>
   </main>
   
   <footer class="bg-gray-900 text-gray-300 py-6 mt-12 text-center">
@@ -51,66 +49,28 @@
   <script>
     // Update footer year
     document.getElementById("year").textContent = new Date().getFullYear();
-    
-    document.addEventListener("DOMContentLoaded", () => {
-      const CHANNEL_ID = "UCo3Z-t-u4yfE5omo8Q_cl5Q";
-      const PROXY = "https://corsproxy.io/?";
-      const FEED_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-      const videosGrid = document.getElementById("videosGrid");
-      
-      async function loadVideos() {
-        try {
-          const response = await fetch(PROXY + encodeURIComponent(FEED_URL));
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-          const text = await response.text();
-          const parser = new DOMParser();
-          const xml = parser.parseFromString(text, "application/xml");
-          const entries = xml.querySelectorAll("entry");
-          
-          if (!entries.length) {
-            videosGrid.innerHTML = "<p class='text-center text-gray-500'>No videos found.</p>";
-            return;
-          }
-          
-          videosGrid.innerHTML = ""; // Clear loading or old content
-          
-          entries.forEach(entry => {
-            const videoId = entry.querySelector("id").textContent.split(":").pop();
-            const title = entry.querySelector("title").textContent;
-            const published = new Date(entry.querySelector("published").textContent).toLocaleDateString();
-            const description = entry.querySelector("media\\:description, description")?.textContent || "";
-            const thumbnailUrl = entry.querySelector("media\\:thumbnail")?.getAttribute("url") || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-            
-            // Create card element
-            const card = document.createElement("article");
-            card.className = "bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300";
-            
-            card.innerHTML = `
-              <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer" class="block">
-                <img src="${thumbnailUrl}" alt="${title} thumbnail" class="w-full aspect-video object-cover" loading="lazy" />
-              </a>
-              <div class="p-4">
-                <h3 class="text-lg font-semibold mb-2">${title}</h3>
-                <p class="text-sm text-gray-500 mb-3">${published}</p>
-                <p class="text-gray-700 text-sm line-clamp-3">${description}</p>
-                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank" rel="noopener noreferrer" class="inline-block mt-4 text-primary font-semibold hover:underline">
-                  Watch on YouTube &rarr;
-                </a>
-              </div>
-            `;
-            
-            videosGrid.appendChild(card);
-          });
-          
-        } catch (err) {
-          console.error("Failed to load videos:", err);
-          videosGrid.innerHTML = `<p class="text-center text-red-500">Failed to load videos. Please try again later.</p>`;
-        }
-      }
-      
-      loadVideos();
-    });
   </script>
+
+  <script>
+fetch('data/videos.json')
+  .then(r => r.json())
+  .then(videos => {
+    const container = document.getElementById('videosGrid');
+    videos.forEach(v => {
+      const card = document.createElement('div');
+      card.className = 'bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden';
+
+      card.innerHTML = `
+        <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/${v.id}" frameborder="0" allowfullscreen></iframe>
+        <div class="p-4">
+          <h3 class="font-semibold text-lg mb-1">${v.title}</h3>
+          <p class="text-sm text-gray-500">${new Date(v.published).toLocaleDateString()}</p>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  });
+</script>
   
   <script>
     document.addEventListener("DOMContentLoaded", () => {
