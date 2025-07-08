@@ -1,63 +1,61 @@
 const fs = require('fs');
 const https = require('https');
+const xml2js = require('xml2js');
 
-const API_KEY = process.env.YOUTUBE_API_KEY; // Set this in your GitHub Actions secrets as YOUTUBE_API_KEY
-const CHANNEL_ID = 'UCo3Z-t-u4yfE5omo8Q_cl5Q'; // Replace with your actual channel ID
+const CHANNEL_ID = 'UCo3Z-t-u4yfE5omo8Q_cl5Q'; // Your YouTube channel ID
+const MAX_RESULTS = 10;
 
-// YouTube API endpoint for listing channel videos (most recent first)
-const maxResults = 10; // Number of videos to fetch
+const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
 
-const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=${maxResults}&type=video`;
-
-function fetchJson(url) {
+function fetchXML(url) {
   return new Promise((resolve, reject) => {
     https.get(url, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data);
-          resolve(json);
-        } catch (err) {
-          reject(err);
-        }
-      });
-    }).on('error', reject);
+      res.on('end', () => resolve(data));
+      res.on('error', reject);
+    });
+  });
+}
+
+async function parseXML(xml) {
+  return new Promise((resolve, reject) => {
+    xml2js.parseString(xml, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
   });
 }
 
 async function main() {
-  if (!API_KEY) {
-    console.error('ERROR: YOUTUBE_API_KEY environment variable not set');
-    process.exit(1);
-  }
-
   try {
-    const data = await fetchJson(url);
-    if (!data.items || data.items.length === 0) {
-      console.error('No videos found for this channel.');
+    const xml = await fetchXML(RSS_URL);
+    const parsed = await parseXML(xml);
+
+    const entries = parsed.feed.entry || [];
+    const videos = entries.slice(0, MAX_RESULTS).map(entry => ({
+      videoId: entry['yt:videoId'][0],
+      title: entry.title[0],
+      link: entry.link[0].$.href,
+      publishedAt: entry.published[0],
+      thumbnail: `https://i.ytimg.com/vi/${entry['yt:videoId'][0]}/hqdefault.jpg`,
+      description: entry['media:group'][0]['media:description'][0]
+    }));
+
+    if (videos.length === 0) {
+      console.error('No videos found in RSS feed.');
       process.exit(1);
     }
 
-    // Map the results to a simpler format
-    const videos = data.items.map(item => ({
-      videoId: item.id.videoId,
-      title: item.snippet.title,
-      description: item.snippet.description,
-      publishedAt: item.snippet.publishedAt,
-      thumbnail: item.snippet.thumbnails.high.url,
-      videoUrl: `https://www.youtube.com/watch?v=${item.id.videoId}`
-    }));
-
-    // Write latest video (first one)
+    // Save latest video (first one)
     fs.writeFileSync('data/latest-video.json', JSON.stringify(videos[0], null, 2));
 
-    // Write all videos
+    // Save all videos
     fs.writeFileSync('data/videos.json', JSON.stringify(videos, null, 2));
 
     console.log('Successfully updated latest-video.json and videos.json');
   } catch (error) {
-    console.error('Failed to fetch videos:', error);
+    console.error('Error fetching or parsing RSS feed:', error);
     process.exit(1);
   }
 }
