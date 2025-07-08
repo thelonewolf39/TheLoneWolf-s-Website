@@ -13,6 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class', // important for dark mode toggle
             theme: {
                 extend: {
                     colors: {
@@ -75,175 +76,247 @@
     transform: none !important;
     transition: none !important;
   }
+
+  /* Accessibility menu styling */
+  #accessibility-menu {
+    transition: max-height 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+  }
+  #accessibility-menu.open {
+    max-height: 300px; /* enough to show all buttons */
+  }
 </style>
 
     <style>
     .header {
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 1000 !important;
-  background: linear-gradient(90deg, #ff0000 0%, #cc0000 100%) !important;
-  padding: 1rem 2rem !important;
-  color: white !important;
-  font-weight: 700 !important;
-  font-size: 1.75rem !important;
-  letter-spacing: 0.05em !important;
-  font-family: 'Poppins', sans-serif !important;
-  user-select: none !important;
-  box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3) !important;
-  text-align: center !important;
-  transition: box-shadow 0.3s ease !important;
-}
-
-.header p {
-  font-weight: 400 !important;
-  font-size: 1rem !important;
-  margin-top: 0.25rem !important;
-  opacity: 0.9 !important;
-  font-family: 'Poppins', sans-serif !important;
-}
-
-.header:hover {
-  box-shadow: 0 6px 14px rgba(255, 0, 0, 0.5) !important;
-}
-
-
-
-    body {
-      scroll-margin-top: 80px; /* for in-page anchor spacing below sticky header */
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 1000 !important;
+      background: linear-gradient(90deg, #ff0000 0%, #cc0000 100%) !important;
+      padding: 1rem 2rem !important;
+      color: white !important;
+      font-weight: 700 !important;
+      font-size: 1.75rem !important;
+      letter-spacing: 0.05em !important;
+      font-family: 'Poppins', sans-serif !important;
+      user-select: none !important;
+      box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3) !important;
+      text-align: center !important;
+      transition: box-shadow 0.3s ease !important;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    </style>
+
+    .header p {
+      font-weight: 400 !important;
+      font-size: 1rem !important;
+      margin-top: 0.25rem !important;
+      opacity: 0.9 !important;
+      font-family: 'Poppins', sans-serif !important;
+    }
+
+    .header:hover {
+      box-shadow: 0 6px 14px rgba(255, 0, 0, 0.5) !important;
+    }
+
+    /* Accessibility menu button */
+    #accessibility-button {
+      background: transparent;
+      border: 2px solid white;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 1.25rem;
+      cursor: pointer;
+      color: white;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    #accessibility-button:hover,
+    #accessibility-button:focus {
+      background-color: rgba(255,255,255,0.2);
+      outline: none;
+    }
+
+    /* Accessibility menu container */
+    #accessibility-menu {
+      background: var(--secondary);
+      color: var(--text);
+      padding: 1rem;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+      width: 220px;
+      position: absolute;
+      right: 2rem;
+      top: 3.75rem;
+      box-shadow: 0 0 12px rgba(0,0,0,0.15);
+      font-family: 'Poppins', sans-serif;
+      z-index: 1100;
+    }
+
+    #accessibility-menu button {
+      display: block;
+      width: 100%;
+      background: var(--primary);
+      border: none;
+      color: white;
+      padding: 8px;
+      margin-bottom: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      user-select: none;
+      transition: background-color 0.2s ease;
+    }
+
+    #accessibility-menu button:hover,
+    #accessibility-menu button:focus {
+      background-color: var(--alert, #cc0000);
+      outline: none;
+    }
+</style>
 </head>
 <body class="font-[Poppins] text-gray-800 bg-white">
 
-    <!-- Sticky header -->
-    <div id="header-placeholder"></div>
+<!-- Sticky Header -->
+<header class="header" role="banner" aria-label="Site header">
+  <div>The Lone Wolf</div>
+  <button id="accessibility-button" aria-haspopup="true" aria-expanded="false" aria-controls="accessibility-menu" aria-label="Toggle accessibility menu">☰</button>
+</header>
 
+<!-- Accessibility menu -->
+<nav id="accessibility-menu" class="hidden" role="region" aria-label="Accessibility settings" tabindex="-1">
+  <button id="themeToggle" type="button" aria-pressed="false">🌗 Toggle Dark Mode</button>
+  <button id="cbToggle" type="button" aria-pressed="false">🎨 Toggle Colorblind Mode</button>
+  <button id="aosToggle" type="button" aria-pressed="true">🎞️ Toggle Animations</button>
+</nav>
 
-    <!-- Hero -->
-    <header class="bg-gradient-to-br from-primary to-red-600 text-white py-20">
-        <div class="container mx-auto px-6 text-center">
-            <h1 class="text-5xl md:text-6xl font-bold mb-4">Welcome to The Lone Wolf</h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Awesome videos, fun content, and everything in between.</p>
-            <a href="https://www.youtube.com/@thelonewolf-AS" target="_blank"
-               class="inline-block bg-white text-primary font-semibold px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-200">
-                Subscribe Now
-            </a>
-        </div>
-    </header>
-
-    <!-- Featured Video - replaced with dynamic latest video -->
-    <section class="py-16 bg-gray-50">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-semibold mb-8">Check Out Our Latest Video</h2>
-            <div class="relative pb-[56.25%] h-0 max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl">
-                <!-- Dynamic iframe - starts blank, will be updated by JS -->
-                <iframe id="latestYtVideo" class="absolute inset-0 w-full h-full"
-                        src="about:blank"
-                        frameborder="0"
-                        allowfullscreen
-                        title="Latest YouTube Video">
-                </iframe>
-            </div>
-        </div>
-    </section>
-
-    <!--Info for Website-->
-    <div>
-        <h2 class="text-3xl font-semibold mb-8">Important!</h2>
-        <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Until I can get this working, you might have to refresh the page to see changes.
-        Pc's: Ctrl+Shft+R
-        Android/iOS/Samsung: Refresh normally</p>
+<!-- Hero -->
+<header class="bg-gradient-to-br from-primary to-red-600 text-white py-20">
+    <div class="container mx-auto px-6 text-center">
+        <h1 class="text-5xl md:text-6xl font-bold mb-4">Welcome to The Lone Wolf</h1>
+        <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Awesome videos, fun content, and everything in between.</p>
+        <a href="https://www.youtube.com/@thelonewolf-AS" target="_blank"
+           class="inline-block bg-white text-primary font-semibold px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-200">
+            Subscribe Now
+        </a>
     </div>
+</header>
 
-    <!-- About Channel -->
-    <section class="py-16">
-        <div class="container mx-auto px-6 max-w-4xl">
-            <h2 class="text-3xl font-semibold text-center mb-6">About the Channel</h2>
-            <p class="text-lg text-center text-gray-600 leading-relaxed">
-                The Lone Wolf is where creativity meets entertainment. We post regular videos on Tail Making, Mask Making, Therian stuff, Furry Stuff, and more!
-                Subscribe and join our growing community of awesome people!
-            </p>
+<!-- Featured Video - replaced with dynamic latest video -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-semibold mb-8">Check Out Our Latest Video</h2>
+        <div class="relative pb-[56.25%] h-0 max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl">
+            <!-- Dynamic iframe - starts blank, will be updated by JS -->
+            <iframe id="latestYtVideo" class="absolute inset-0 w-full h-full"
+                    src="about:blank"
+                    frameborder="0"
+                    allowfullscreen
+                    title="Latest YouTube Video">
+            </iframe>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Request Form Selector -->
-    <section id="form" class="py-16 bg-gray-100">
-        <div class="container mx-auto px-6 max-w-3xl">
-            <h2 class="text-3xl font-semibold text-center mb-8">Have a Request or Suggestion?</h2>
+<!--Info for Website-->
+<div>
+    <h2 class="text-3xl font-semibold mb-8">Important!</h2>
+    <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Until I can get this working, you might have to refresh the page to see changes.
+    Pc's: Ctrl+Shft+R
+    Android/iOS/Samsung: Refresh normally</p>
+</div>
 
-            <!-- Selector -->
-            <div class="mb-8 flex justify-center gap-4">
-                <button class="btn-select bg-primary text-white px-6 py-2 rounded-md shadow hover:bg-red-700 transition"
-                        data-form="form1">
-                    Mask request
-                </button>
-                <button class="btn-select bg-gray-300 text-gray-800 px-6 py-2 rounded-md shadow hover:bg-gray-400 transition"
-                        data-form="form2">
-                    Tail Request
-                </button>
-                <button class="btn-select bg-gray-300 text-gray-800 px-6 py-2 rounded-md shadow hover:bg-gray-400 transition"
-                        data-form="form3">
-                    Video Request
-                </button>
-            </div>
+<!-- About Channel -->
+<section class="py-16">
+    <div class="container mx-auto px-6 max-w-4xl">
+        <h2 class="text-3xl font-semibold text-center mb-6">About the Channel</h2>
+        <p class="text-lg text-center text-gray-600 leading-relaxed">
+            The Lone Wolf is where creativity meets entertainment. We post regular videos on Tail Making, Mask Making, Therian stuff, Furry Stuff, and more!
+            Subscribe and join our growing community of awesome people!
+        </p>
+    </div>
+</section>
 
-            <!-- Iframe container -->
-            <div class="relative pb-[56.25%] h-0 shadow-xl rounded-xl overflow-hidden">
-                <iframe id="requestForm"
-                        class="absolute inset-0 w-full h-full border-0 rounded-xl"
-                        src="https://docs.google.com/forms/d/e/1FAIpQLSdvvZUvaleGD__fWu_iC8hX74fNxr8Q9v6Lw8OSZxy-wmOJYg/viewform?embedded=true"
-                        loading="lazy"></iframe>
-            </div>
-            <p class="mt-4 text-center text-sm text-gray-500">Let us know what you'd like to see next!</p>
+<!-- Request Form Selector -->
+<section id="form" class="py-16 bg-gray-100">
+    <div class="container mx-auto px-6 max-w-3xl">
+        <h2 class="text-3xl font-semibold text-center mb-8">Have a Request or Suggestion?</h2>
+
+        <!-- Selector -->
+        <div class="mb-8 flex justify-center gap-4">
+            <button class="btn-select bg-primary text-white px-6 py-2 rounded-md shadow hover:bg-red-700 transition"
+                    data-form="form1">
+                Mask request
+            </button>
+            <button class="btn-select bg-gray-300 text-gray-800 px-6 py-2 rounded-md shadow hover:bg-gray-400 transition"
+                    data-form="form2">
+                Tail Request
+            </button>
+            <button class="btn-select bg-gray-300 text-gray-800 px-6 py-2 rounded-md shadow hover:bg-gray-400 transition"
+                    data-form="form3">
+                Video Request
+            </button>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-300 py-6">
-        <div class="container mx-auto px-6 text-center">
-            <p>&copy; <span id="year"></span> The Lone Wolf. All rights reserved.</p>
+        <!-- Iframe container -->
+        <div class="relative pb-[56.25%] h-0 shadow-xl rounded-xl overflow-hidden">
+            <iframe id="requestForm"
+                    class="absolute inset-0 w-full h-full border-0 rounded-xl"
+                    src="https://docs.google.com/forms/d/e/1FAIpQLSdvvZUvaleGD__fWu_iC8hX74fNxr8Q9v6Lw8OSZxy-wmOJYg/viewform?embedded=true"
+                    loading="lazy"></iframe>
         </div>
-    </footer>
+        <p class="mt-4 text-center text-sm text-gray-500">Let us know what you'd like to see next!</p>
+    </div>
+</section>
 
-    <!-- Scripts -->
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-300 py-6">
+    <div class="container mx-auto px-6 text-center">
+        <p>&copy; <span id="year"></span> The Lone Wolf. All rights reserved.</p>
+    </div>
+</footer>
 
-    <script>
-        // Buttons
-        const buttons = document.querySelectorAll(".btn-select");
-        const iframe = document.getElementById("requestForm");
+<!-- Scripts -->
 
-        // Your actual Google Form embed URLs here:
-        const formUrls = {
-            form1: "https://docs.google.com/forms/d/e/1FAIpQLSdvvZUvaleGD__fWu_iC8hX74fNxr8Q9v6Lw8OSZxy-wmOJYg/viewform?embedded=true",
-            form2: "https://docs.google.com/forms/d/e/1FAIpQLSe1DRXAirat96Gv32LmOrex_yRWNe-BRNVoCQdJyCTIxBupmA/viewform?embedded=true",
-            form3: "https://docs.google.com/forms/d/e/1FAIpQLSdynAz96c0xQ9PWRJX0-8RswBihF_11axm3vdyosHuwg3WH7Q/viewform?embedded=true"
-        };
+<script>
+    // Buttons
+    const buttons = document.querySelectorAll(".btn-select");
+    const iframe = document.getElementById("requestForm");
 
-        buttons.forEach((btn) => {
-            btn.addEventListener("click", () => {
-                // Update iframe src to chosen form
-                const selected = btn.getAttribute("data-form");
-                iframe.src = formUrls[selected];
+    // Your actual Google Form embed URLs here:
+    const formUrls = {
+        form1: "https://docs.google.com/forms/d/e/1FAIpQLSdvvZUvaleGD__fWu_iC8hX74fNxr8Q9v6Lw8OSZxy-wmOJYg/viewform?embedded=true",
+        form2: "https://docs.google.com/forms/d/e/1FAIpQLSe1DRXAirat96Gv32LmOrex_yRWNe-BRNVoCQdJyCTIxBupmA/viewform?embedded=true",
+        form3: "https://docs.google.com/forms/d/e/1FAIpQLSdynAz96c0xQ9PWRJX0-8RswBihF_11axm3vdyosHuwg3WH7Q/viewform?embedded=true"
+    };
 
-                // Update button styles
-                buttons.forEach(b => {
-                    b.classList.remove("bg-primary", "text-white");
-                    b.classList.add("bg-gray-300", "text-gray-800");
-                });
-                btn.classList.add("bg-primary", "text-white");
-                btn.classList.remove("bg-gray-300", "text-gray-800");
+    buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            // Update iframe src to chosen form
+            const selected = btn.getAttribute("data-form");
+            iframe.src = formUrls[selected];
+
+            // Update button styles
+            buttons.forEach(b => {
+                b.classList.remove("bg-primary", "text-white");
+                b.classList.add("bg-gray-300", "text-gray-800");
             });
+            btn.classList.add("bg-primary", "text-white");
+            btn.classList.remove("bg-gray-300", "text-gray-800");
         });
+    });
 
-        // Set initial active button
-        buttons[0].click();
+    // Set initial active button
+    buttons[0].click();
 
-        // Dynamic year in footer
-        document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
+    // Dynamic year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 
-    <script>
+<script>
 fetch('/TheLoneWolf-s-Website/data/latest-video.json')
   .then(r => r.json())
   .then(({ id }) => {
@@ -252,16 +325,96 @@ fetch('/TheLoneWolf-s-Website/data/latest-video.json')
   });
 </script>
     
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      fetch('header.html')
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById('header-placeholder').innerHTML = html;
-        })
-        .catch(console.error);
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  fetch('header.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('header-placeholder').innerHTML = html;
+    })
+    .catch(console.error);
+});
+</script>
+
+<!-- Accessibility toggles script -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const accessBtn = document.getElementById('accessibility-button');
+    const accessMenu = document.getElementById('accessibility-menu');
+
+    // Toggle menu visibility
+    accessBtn.addEventListener('click', () => {
+      const isOpen = accessMenu.classList.toggle('open');
+      accessMenu.classList.toggle('hidden', !isOpen);
+      accessBtn.setAttribute('aria-expanded', isOpen);
+      if (isOpen) {
+        accessMenu.focus();
+      }
     });
-  </script>
+
+    // Dark Mode Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      themeToggle.setAttribute('aria-pressed', isDark);
+    });
+    // On load apply theme
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+      themeToggle.setAttribute('aria-pressed', true);
+    }
+
+    // Colorblind Mode Toggle
+    const cbToggle = document.getElementById('cbToggle');
+    cbToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('colorblind');
+      const isCB = document.documentElement.classList.contains('colorblind');
+      localStorage.setItem('colorblind', isCB ? 'true' : 'false');
+      cbToggle.setAttribute('aria-pressed', isCB);
+    });
+    // On load apply colorblind mode
+    if (localStorage.getItem('colorblind') === 'true') {
+      document.documentElement.classList.add('colorblind');
+      cbToggle.setAttribute('aria-pressed', true);
+    }
+
+    // AOS Toggle (animation)
+    const aosToggle = document.getElementById('aosToggle');
+    let aosEnabled = true;
+
+    function enableAOS() {
+      if(window.AOS) window.AOS.init();
+      document.body.classList.remove('aos-off');
+      aosEnabled = true;
+      localStorage.setItem('aosEnabled', 'true');
+      aosToggle.setAttribute('aria-pressed', true);
+    }
+
+    function disableAOS() {
+      document.body.classList.add('aos-off');
+      aosEnabled = false;
+      localStorage.setItem('aosEnabled', 'false');
+      aosToggle.setAttribute('aria-pressed', false);
+    }
+
+    aosToggle.addEventListener('click', () => {
+      if (aosEnabled) {
+        disableAOS();
+      } else {
+        enableAOS();
+      }
+    });
+
+    // On load check AOS preference
+    if (localStorage.getItem('aosEnabled') === 'false') {
+      disableAOS();
+    } else {
+      enableAOS();
+    }
+  });
+</script>
 
 <!-- Ad Blocker Warning Banner -->
 <div id="adblock-warning" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 max-w-xl bg-yellow-100 border border-yellow-400 text-yellow-900 rounded-lg shadow-lg px-6 py-4 flex items-center space-x-4 z-50">
@@ -274,7 +427,7 @@ fetch('/TheLoneWolf-s-Website/data/latest-video.json')
   </p>
   <button id="close-adblock-warning" aria-label="Close warning" class="text-yellow-900 hover:text-yellow-700 focus:outline-none font-bold text-xl">
     &times;
-  </button>
+        </button>
 </div>
 
 <script>
@@ -335,6 +488,7 @@ fetch('/TheLoneWolf-s-Website/data/latest-video.json')
       }, 3000);
     }, 200);
   });
+</script>
 
 </body>
 </html>
