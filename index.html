@@ -1,261 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Lone Wolf - YouTube Channel</title>
+  <title>The Lone Wolf - Craft & Creativity</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <!-- Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CSS CDN -->
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: "#ff0000" // YouTube red
-          }
-        }
-      }
-    };
-  </script>
 
   <!-- AOS CSS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 
   <style>
-    /* ---------- COLOR‑BLIND + DARK MODE ---------- */
-    html {
-      --bg: #ffffff;
-      --text: #000000;
-      --primary: #ff0000; /* YouTube red (default) */
-      --secondary: #e5e5e5;
-    }
-    html.dark {
-      --bg: #1a1a1a;
-      --text: #e6e6e6;
-      --primary: #ff4d4d;
-      --secondary: #333333;
-    }
-    html.colorblind {
-      --bg: #ffffff;
-      --text: #000000;
-      --primary: #0072B2;   /* blue */
-      --secondary: #E69F00; /* orange */
-      --accent: #009E73;
-      --alert: #D55E00;
-    }
-    html.dark.colorblind {
-      --bg: #1e1e1e;
-      --text: #f5f5f5;
-      --primary: #56B4E9;   /* sky blue */
-      --secondary: #E69F00;
-      --accent: #009E73;
-      --alert: #F0E442;
-    }
     body {
-      background-color: var(--bg);
-      color: var(--text);
-    }
-    .bg-primary {
-      background-color: var(--primary) !important;
-    }
-    .text-primary {
-      color: var(--primary) !important;
-    }
-    /* AOS fallback if disabled */
-    body.aos-off [data-aos] {
-      opacity: 1 !important;
-      transform: none !important;
-      transition: none !important;
-    }
-
-    .header {
-      position: sticky !important;
-      top: 0 !important;
-      z-index: 1000 !important;
-      background: linear-gradient(90deg, #ff0000 0%, #cc0000 100%) !important;
-      padding: 1rem 2rem !important;
-      color: white !important;
-      font-weight: 700 !important;
-      font-size: 1.75rem !important;
-      letter-spacing: 0.05em !important;
-      font-family: 'Poppins', sans-serif !important;
-      user-select: none !important;
-      box-shadow: 0 4px 8px rgba(255, 0, 0, 0.3) !important;
-      text-align: center !important;
-      transition: box-shadow 0.3s ease !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 1rem !important;
-    }
-    .header:hover {
-      box-shadow: 0 6px 14px rgba(255, 0, 0, 0.5) !important;
-    }
-    .header img {
-      height: 40px;
-      user-select: none;
-    }
-    body {
-      scroll-margin-top: 80px; /* for in-page anchor spacing below sticky header */
-    }
-
-    html {
+      font-family: 'Open Sans', sans-serif;
+      background: #f7f3ef; /* light warm cream */
+      color: #3e3e3e;
       scroll-behavior: smooth;
+    }
+
+    h1, h2 {
+      font-family: 'Montserrat', sans-serif;
+      color: #2a2a2a;
+    }
+
+    /* Paw print background pattern */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('https://cdn.pixabay.com/photo/2017/07/06/20/41/paw-2485277_1280.png');
+      background-repeat: repeat;
+      background-size: 80px 80px;
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Header styling */
+    header {
+      background: linear-gradient(135deg, #4b3b23, #76604a);
+      color: #f7f3ef;
+      padding: 3rem 2rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    }
+
+    header img {
+      max-height: 60px;
+      margin-bottom: 1rem;
+      filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.4));
+    }
+
+    /* Button styles */
+    .btn-primary {
+      background-color: #845422;
+      color: #f7f3ef;
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      border-radius: 9999px;
+      box-shadow: 0 4px 6px rgba(132, 84, 34, 0.4);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      display: inline-block;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      background-color: #a26324;
+      transform: scale(1.05);
+    }
+
+    /* Section padding */
+    section {
+      padding: 4rem 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    /* Video iframe container */
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 */
+      height: 0;
+      overflow: hidden;
+      border-radius: 1rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 1rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #777;
+      background-color: #e8e1d9;
+      margin-top: 3rem;
     }
   </style>
 </head>
-<body class="font-[Poppins] text-gray-800 bg-white">
+<body>
 
-  <!-- Sticky header with logo -->
-  <header class="header" data-aos="fade-down">
-    <img src="your-logo.png" alt="The Lone Wolf Logo" />
+  <header data-aos="fade-down">
+    <!-- You can replace with your own transparent PNG logo -->
+    <img src="https://cdn.pixabay.com/photo/2017/07/06/20/41/paw-2485277_1280.png" alt="Wolf Paw Print Logo" />
     <h1>The Lone Wolf</h1>
+    <p>Crafting, Tail Making, Mask Making & More</p>
   </header>
 
-  <!-- Hero -->
-  <section class="bg-gradient-to-br from-primary to-red-600 text-white py-20" data-aos="fade-up">
-    <div class="container mx-auto px-6 text-center">
-      <h1 class="text-5xl md:text-6xl font-bold mb-4">Welcome to The Lone Wolf</h1>
-      <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
-        Awesome videos, fun content, and everything in between.
-      </p>
-      <a href="https://www.youtube.com/@thelonewolf-AS" target="_blank"
-         class="inline-block bg-white text-primary font-semibold px-8 py-3 rounded-full shadow-lg hover:scale-105 transition-transform duration-200">
-        Subscribe Now
-      </a>
+  <section data-aos="fade-up">
+    <h2 class="text-4xl font-bold mb-4">Welcome to The Lone Wolf</h2>
+    <p class="mb-6 text-lg leading-relaxed">
+      Join our community where creativity meets nature. We share videos about crafting amazing tails, masks, and exploring the furry & therian world.
+    </p>
+    <a href="https://www.youtube.com/@thelonewolf-AS" target="_blank" class="btn-primary">Subscribe on YouTube</a>
+  </section>
+
+  <section data-aos="zoom-in" class="video-section">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Latest Video</h2>
+    <div class="video-wrapper">
+      <iframe
+        id="latestYtVideo"
+        src="about:blank"
+        title="Latest YouTube Video"
+        allowfullscreen
+        loading="lazy"
+      ></iframe>
     </div>
   </section>
 
-  <!-- Featured Video - dynamic latest video -->
-  <section class="py-16 bg-gray-50" data-aos="fade-up">
-    <div class="container mx-auto px-6 text-center">
-      <h2 class="text-3xl font-semibold mb-8">Check Out Our Latest Video</h2>
-      <div class="relative pb-[56.25%] h-0 max-w-4xl mx-auto rounded-xl overflow-hidden shadow-xl">
-        <iframe id="latestYtVideo" class="absolute inset-0 w-full h-full"
-                src="about:blank"
-                frameborder="0"
-                allowfullscreen
-                title="Latest YouTube Video"></iframe>
-      </div>
-    </div>
-  </section>
-
-  <!-- Info for Website -->
-  <section data-aos="fade-up" class="py-12 max-w-3xl mx-auto px-6 text-center">
-    <h2 class="text-3xl font-semibold mb-8">Important!</h2>
-    <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
-      Until I can get this working, you might have to refresh the page to see changes.<br/>
-      PC's: Ctrl+Shift+R<br/>
-      Android/iOS/Samsung: Refresh normally
+  <section data-aos="fade-up">
+    <h2 class="text-3xl font-semibold mb-6">About The Channel</h2>
+    <p class="text-lg leading-relaxed">
+      The Lone Wolf is your go-to place for creative tutorials and explorations in the furry and crafting communities. Whether you're here to learn or just browse, we welcome you.
     </p>
   </section>
 
-  <!-- About Channel -->
-  <section class="py-16" data-aos="fade-right">
-    <div class="container mx-auto px-6 max-w-4xl">
-      <h2 class="text-3xl font-semibold text-center mb-6">About the Channel</h2>
-      <p class="text-lg text-center text-gray-600 leading-relaxed">
-        The Lone Wolf is where creativity meets entertainment. We post regular videos on Tail Making, Mask Making, Therian stuff, Furry Stuff, and more!
-        Subscribe and join our growing community of awesome people!
-      </p>
+  <section data-aos="fade-up" class="request-section">
+    <h2 class="text-3xl font-semibold mb-6">Send Us Your Requests</h2>
+    <p class="mb-4">Got ideas or questions? Use our Google Forms below to send us your mask, tail, or video requests!</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdvvZUvaleGD__fWu_iC8hX74fNxr8Q9v6Lw8OSZxy-wmOJYg/viewform?embedded=true" target="_blank" class="btn-primary">Mask Request</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1DRXAirat96Gv32LmOrex_yRWNe-BRNVoCQdJyCTIxBupmA/viewform?embedded=true" target="_blank" class="btn-primary">Tail Request</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdynAz96c0xQ9PWRJX0-8RswBihF_11axm3vdyosHuwg3WH7Q/viewform?embedded=true" target="_blank" class="btn-primary">Video Request</a>
     </div>
   </section>
 
-  <!-- Request Form Selector -->
-  <section id="form" class="py-16 bg-gray-100" data-aos="fade-left">
-    <div class="container mx-auto px-6 max-w-3xl">
-      <h2 class="text-3xl font-semibold text-center mb-8">Have a Request or Suggestion?</h2>
-
-      <!-- Selector -->
-      <div class="mb-8 flex justify-center gap-4">
-        <button class="btn-select bg-primary text-white px-6 py-2 rounded-md shadow hover:bg-red-700 transition" data-form="form1">
-          Mask request
-        </button>
-        <button class="btn-select bg-gray-300 text-gray-800 px-6 py-2 rounded-md shadow hover:bg-gray-400 transition" data-form="form2">
-          Tail Request
-        </button>
-        <button class="btn-select bg-gray-300 text-gray-800 px-6 py-2 rounded-md shadow hover:bg-gray-400 transition" data-form="form3">
-          Video Request
-        </button>
-      </div>
-
-      <!-- Iframe container -->
-      <div class="relative pb-[56.25%] h-0 shadow-xl rounded-xl overflow-hidden">
-        <iframe id="requestForm" class="absolute inset-0 w-full h-full border-0 rounded-xl"
-          src="https://docs.google.com/forms/d/e/1FAIpQLSdvvZUvaleGD__fWu_iC8hX74fNxr8Q9v6Lw8OSZxy-wmOJYg/viewform?embedded=true"
-          loading="lazy"></iframe>
-      </div>
-      <p class="mt-4 text-center text-sm text-gray-500">Let us know what you'd like to see next!</p>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-300 py-6" data-aos="fade-up">
-    <div class="container mx-auto px-6 text-center">
-      <p>&copy; <span id="year"></span> The Lone Wolf. All rights reserved.</p>
-    </div>
+  <footer>
+    &copy; <span id="year"></span> The Lone Wolf. All rights reserved.
   </footer>
 
   <!-- Scripts -->
 
   <script>
-    // Buttons for form selector
-    const buttons = document.querySelectorAll(".btn-select");
-    const iframe = document.getElementById("requestForm");
-
-    const formUrls = {
-      form1: "https://docs.google.com/forms/d/e/1FAIpQLSdvvZUvaleGD__fWu_iC8hX74fNxr8Q9v6Lw8OSZxy-wmOJYg/viewform?embedded=true",
-      form2: "https://docs.google.com/forms/d/e/1FAIpQLSe1DRXAirat96Gv32LmOrex_yRWNe-BRNVoCQdJyCTIxBupmA/viewform?embedded=true",
-      form3: "https://docs.google.com/forms/d/e/1FAIpQLSdynAz96c0xQ9PWRJX0-8RswBihF_11axm3vdyosHuwg3WH7Q/viewform?embedded=true"
-    };
-
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const selected = btn.getAttribute("data-form");
-        iframe.src = formUrls[selected];
-        buttons.forEach(b => {
-          b.classList.remove("bg-primary", "text-white");
-          b.classList.add("bg-gray-300", "text-gray-800");
-        });
-        btn.classList.add("bg-primary", "text-white");
-        btn.classList.remove("bg-gray-300", "text-gray-800");
-      });
-    });
-
-    // Set initial active button
-    buttons[0].click();
-
-    // Dynamic year in footer
+    // Update year in footer
     document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
 
-  <script>
-    // Fetch and update latest YouTube video iframe
+    // Load latest video ID and embed it
     fetch('/TheLoneWolf-s-Website/data/latest-video.json')
-      .then(r => r.json())
+      .then(res => res.json())
       .then(({ id }) => {
-        document.getElementById('latestYtVideo').src =
-          `https://www.youtube.com/embed/${id}?rel=0`;
+        document.getElementById('latestYtVideo').src = `https://www.youtube.com/embed/${id}?rel=0`;
       })
       .catch(() => {
-        // fallback or error handling here if needed
+        // fallback video or message if fetch fails
+        document.getElementById('latestYtVideo').src = "https://www.youtube.com/embed/dQw4w9WgXcQ"; // classic fallback
       });
-  </script>
 
-  <!-- AOS JS and Init -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
+    // Initialize AOS animations
     AOS.init({
-      duration: 700,
+      duration: 800,
       easing: 'ease-in-out',
       once: true,
-      anchorPlacement: 'top-bottom'
     });
   </script>
+
+  <!-- AOS JS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
 </body>
 </html>
