@@ -199,6 +199,7 @@
     <button id="cbToggle" class="w-full text-left hover:underline">🎨 Toggle Colorblind Mode</button>
     <button id="aosToggle" class="w-full text-left hover:underline">🎞️ Toggle Animations</button>
 
+
     <div class="pt-2 border-t">
       <p class="text-xs">🌍 Change Language:</p>
       <div id="google_translate_element" class="mt-1"></div>
@@ -355,77 +356,84 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <script>
   // Accessibility menu toggle
-  const accessMenuBtn = document.getElementById('accessMenuBtn');
-  const accessMenu = document.getElementById('accessMenu');
+const accessMenuBtn = document.getElementById('accessMenuBtn');
+const accessMenu = document.getElementById('accessMenu');
 
-  accessMenuBtn.addEventListener('click', () => {
-    accessMenu.classList.toggle('hidden');
-  });
+accessMenuBtn.addEventListener('click', () => {
+  accessMenu.classList.toggle('hidden');
+});
 
-  // Close menu when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!accessMenu.contains(e.target) && e.target !== accessMenuBtn) {
-      accessMenu.classList.add('hidden');
-    }
-  });
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+  if (!accessMenu.contains(e.target) && e.target !== accessMenuBtn) {
+    accessMenu.classList.add('hidden');
+  }
+});
 
-  // LocalStorage keys
-  const keys = {
-    dark: 'prefersDark',
-    cb: 'prefersColorblind',
-    aos: 'prefersAOS',
-  };
+const keys = {
+  dark: 'prefersDark',
+  cb: 'prefersColorblind',
+  aos: 'prefersAOS',
+};
 
-  // Apply saved preferences on load
-  function applyPreferences() {
-    if (localStorage.getItem(keys.dark) === 'true') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-
-    if (localStorage.getItem(keys.cb) === 'true') {
-      document.documentElement.classList.add('colorblind');
-    } else {
-      document.documentElement.classList.remove('colorblind');
-    }
-
-    if (localStorage.getItem(keys.aos) === 'false') {
-      document.body.classList.add('aos-off');
-      AOS.init({ disable: true });
-    } else {
-      document.body.classList.remove('aos-off');
-      AOS.init();
-    }
+function applyPreferences() {
+  // Dark mode
+  if (localStorage.getItem(keys.dark) === 'true') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
   }
 
-  applyPreferences();
+  // Colorblind mode
+  if (localStorage.getItem(keys.cb) === 'true') {
+    document.documentElement.classList.add('colorblind');
+  } else {
+    document.documentElement.classList.remove('colorblind');
+  }
 
-  // Toggle buttons
-  document.getElementById('themeToggle').addEventListener('click', () => {
-    const isDark = document.documentElement.classList.toggle('dark');
-    localStorage.setItem(keys.dark, isDark);
-  });
+  // AOS animations
+  if (localStorage.getItem(keys.aos) === 'false') {
+    document.body.classList.add('aos-off');
+    if (window.AOS) AOS.init({ disable: true });
+  } else {
+    document.body.classList.remove('aos-off');
+    if (window.AOS) AOS.init();
+  }
+}
 
-  document.getElementById('cbToggle').addEventListener('click', () => {
-    const isCB = document.documentElement.classList.toggle('colorblind');
-    localStorage.setItem(keys.cb, isCB);
-  });
+applyPreferences();
 
-  document.getElementById('aosToggle').addEventListener('click', () => {
-    const isAOSOff = document.body.classList.toggle('aos-off');
-    localStorage.setItem(keys.aos, !isAOSOff);
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem(keys.dark, isDark);
+});
+
+document.getElementById('cbToggle').addEventListener('click', () => {
+  const isCB = document.documentElement.classList.toggle('colorblind');
+  localStorage.setItem(keys.cb, isCB);
+});
+
+document.getElementById('aosToggle').addEventListener('click', () => {
+  const isAOSOff = document.body.classList.toggle('aos-off');
+  localStorage.setItem(keys.aos, !isAOSOff);
+
+  if (window.AOS) {
     if (isAOSOff) {
       AOS.init({ disable: true });
     } else {
       AOS.init();
     }
-  });
-
-  // Google Translate
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
   }
+});
+
+// Load Google Translate
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE },
+    'google_translate_element'
+  );
+}
+
 </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
