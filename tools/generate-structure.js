@@ -24,10 +24,7 @@ function walk(dir, prefix = '', depth = 0) {
   return tree;
 }
 
-const root = '.';
-const outputFile = 'project-structure.md';
+const content = `\`\`\`text\n${walk('.')}\`\`\``;
 
-const content = `\`\`\`text\n${walk(root)}\`\`\``;
-
-fs.writeFileSync(outputFile, content);
-console.log(`✅ Folder structure written to ${outputFile}`);
+fs.writeFileSync('project-structure.md', content);
+console.log('✅ Folder structure written to project-structure.md');
