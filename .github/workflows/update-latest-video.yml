@@ -25,12 +25,15 @@ jobs:
         run: node tools/fetch-videos.js
 
       - name: Commit and push JSON updates
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'ci: update latest videos JSON'
-          branch: master
-          file_pattern: 'data/*.json'
-          commit_user_name: github-actions[bot]
-          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
-          commit_author: 'The Lone Wolf <117017247+thelonewolf39@users.noreply.github.com>'
-          skip_dirty_check: false
+  uses: stefanzweifel/git-auto-commit-action@v5
+  with:
+    commit_message: 'ci: update latest videos JSON'
+    branch: master
+    file_pattern: 'data/*.json'
+    commit_user_name: github-actions[bot]
+    commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+    commit_author: 'thelonewolf39 <117017247+thelonewolf39@users.noreply.github.com>'
+  env:
+    GIT_AUTHOR_NAME: github-actions[bot]
+    GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+    GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
