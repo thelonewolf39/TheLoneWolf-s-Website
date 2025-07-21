@@ -6,27 +6,32 @@
   <title>The Lone Wolf - Craft & Creativity</title>
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet" />
 
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- AOS CSS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <!-- AOS JS -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
   <style>
+    /* --- UPDATED GLOBAL STYLES & COLOR PALETTE --- */
     body {
       font-family: 'Open Sans', sans-serif;
-      background: #f7f3ef; /* light warm cream */
-      color: #3e3e3e;
+      background: #fdfaf6; /* Lighter, cleaner cream */
+      color: #333333; /* Darker, richer text color */
       scroll-behavior: smooth;
     }
 
-    h1, h2 {
+    h1, h2, h3 { /* Added h3 for consistency */
       font-family: 'Montserrat', sans-serif;
       color: #2a2a2a;
     }
 
-    /* Paw print background pattern */
+    /* Paw print background pattern - Reduced opacity for subtlety */
     body::before {
       content: "";
       position: fixed;
@@ -34,16 +39,16 @@
       background-image: url('https://cdn.pixabay.com/photo/2017/07/06/20/41/paw-2485277_1280.png');
       background-repeat: repeat;
       background-size: 80px 80px;
-      opacity: 0.05;
+      opacity: 0.03; /* More subtle */
       pointer-events: none;
       z-index: -1;
     }
 
-    /* Header styling */
+    /* Header styling - Smaller padding, darker gradient */
     header {
-      background: linear-gradient(135deg, #4b3b23, #76604a);
-      color: #f7f3ef;
-      padding: 3rem 2rem;
+      background: linear-gradient(135deg, #2c2c2c, #4a4a4a); /* Darker, modern grey/stone gradient */
+      color: #f7f3ef; /* Keep light text for contrast */
+      padding: 1.5rem 1rem; /* Reduced padding */
       text-align: center;
       position: sticky;
       top: 0;
@@ -52,34 +57,32 @@
     }
 
     header img {
-      max-height: 60px;
-      margin-bottom: 1rem;
+      max-height: 40px; /* Smaller logo */
+      margin-bottom: 0.5rem; /* Reduced margin */
       filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.4));
     }
 
-    /* Button styles */
+    /* Button styles - Updated colors */
     .btn-primary {
-      background-color: #845422;
+      background-color: #d97706; /* Tailwind amber-700 */
       color: #f7f3ef;
       font-weight: 700;
       padding: 0.75rem 1.5rem;
       border-radius: 9999px;
-      box-shadow: 0 4px 6px rgba(132, 84, 34, 0.4);
+      box-shadow: 0 4px 6px rgba(217, 119, 6, 0.4); /* Shadow matches new color */
       transition: background-color 0.3s ease, transform 0.2s ease;
       display: inline-block;
       cursor: pointer;
       text-decoration: none;
     }
     .btn-primary:hover {
-      background-color: #a26324;
+      background-color: #b45309; /* Tailwind amber-800 */
       transform: scale(1.05);
     }
 
-    /* Section padding */
+    /* Section padding - Using Tailwind equivalent classes for consistency */
     section {
-      padding: 4rem 2rem;
-      max-width: 900px;
-      margin: auto;
+      /* Replaced with Tailwind classes in HTML: px-4 py-16 md:px-8 max-w-4xl mx-auto */
     }
 
     /* Video iframe container */
@@ -100,35 +103,83 @@
       border-radius: 1rem;
     }
 
-    /* Footer */
+    /* Footer - Updated background color */
     footer {
       text-align: center;
       padding: 2rem;
       font-size: 0.9rem;
       color: #777;
-      background-color: #e8e1d9;
+      background-color: #e7e5e4; /* Tailwind stone-200 */
       margin-top: 3rem;
+    }
+
+    /* New styles for curated video cards */
+    .curated-video-grid {
+      display: grid;
+      gap: 1.5rem; /* Spacing between cards */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+    }
+
+    .curated-video-card {
+      background-color: #ffffff;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .curated-video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.12);
+    }
+
+    .curated-video-card img {
+      width: 100%;
+      height: 180px; /* Fixed height for thumbnails */
+      object-fit: cover;
+      border-bottom: 1px solid #eee;
+    }
+
+    .curated-video-card-content {
+      padding: 1rem;
+    }
+
+    .curated-video-card-content h4 {
+      font-size: 1.125rem; /* text-lg */
+      font-weight: 600; /* font-semibold */
+      margin-bottom: 0.5rem;
+      color: #2a2a2a;
+    }
+
+    .curated-video-card-content p {
+      font-size: 0.875rem; /* text-sm */
+      color: #555;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
-<body>
+<body class="bg-stone-50 text-stone-800">
 
   <header data-aos="fade-down">
-    <img src="https://cdn.pixabay.com/photo/2017/07/06/20/41/paw-2485277_1280.png" alt="Wolf Paw Print Logo" />
-    <h1>The Lone Wolf</h1>
-    <p>Crafting, Tail Making, Mask Making & More</p>
+    <!-- --- LOGO PATH CORRECTION --- -->
+    <!-- Replace this with your actual channel logo path (e.g., /images/my-logo.png) -->
+    <img src="https://placehold.co/60x40/4b3b23/f7f3ef?text=Your+Logo" alt="The Lone Wolf Logo" />
+    <h1 class="text-3xl font-bold">The Lone Wolf</h1>
+    <p class="text-lg opacity-90">Crafting, Tail Making, Mask Making & More</p>
   </header>
 
-  <section data-aos="fade-up">
-    <h2 class="text-4xl font-bold mb-4">Welcome to The Lone Wolf</h2>
-    <p class="mb-6 text-lg leading-relaxed">
+  <section data-aos="fade-up" class="px-4 py-16 md:px-8 max-w-4xl mx-auto">
+    <h2 class="text-4xl font-bold mb-4 text-center">Welcome to The Lone Wolf</h2>
+    <p class="mb-6 text-lg leading-relaxed text-center">
       Join our community where creativity meets nature. We share videos about crafting amazing tails, masks, and exploring the furry & therian world.
     </p>
-    <a href="https://www.youtube.com/watch?v=347tFfxfDak2" target="_blank" class="btn-primary">Subscribe on YouTube</a>
+    <div class="text-center">
+      <a href="https://www.youtube.com/@thelonewolf-AS" target="_blank" class="btn-primary">Subscribe on YouTube</a>
+    </div>
   </section>
 
-  <section data-aos="zoom-in" class="video-section">
-    <h2 class="text-3xl font-semibold mb-6 text-center">Latest Video</h2>
+  <section data-aos="zoom-in" class="video-section px-4 py-16 md:px-8 max-w-4xl mx-auto">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Latest YouTube Video</h2>
     <div class="video-wrapper">
       <iframe
         id="latestYtVideo"
@@ -140,16 +191,29 @@
     </div>
   </section>
 
-  <section data-aos="fade-up">
-    <h2 class="text-3xl font-semibold mb-6">About The Channel</h2>
-    <p class="text-lg leading-relaxed">
+  <!-- --- NEW SECTION: CURATED VIDEOS FROM FIRESTORE --- -->
+  <section data-aos="fade-up" class="px-4 py-16 md:px-8 max-w-4xl mx-auto">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Curated Videos</h2>
+    <p class="mb-8 text-lg leading-relaxed text-center text-gray-700">
+      Explore a selection of our favorite and most popular videos.
+    </p>
+    <div id="curatedVideosList" class="curated-video-grid">
+      <p class="text-center text-gray-500 col-span-full" id="loadingCuratedVideos">Loading curated videos...</p>
+      <!-- Curated videos will be loaded here dynamically -->
+    </div>
+  </section>
+  <!-- --- END NEW SECTION --- -->
+
+  <section data-aos="fade-up" class="px-4 py-16 md:px-8 max-w-4xl mx-auto">
+    <h2 class="text-3xl font-semibold mb-6 text-center">About The Channel</h2>
+    <p class="text-lg leading-relaxed text-center">
       The Lone Wolf is your go-to place for creative tutorials and explorations in the furry and crafting communities. Whether you're here to learn or just browse, we welcome you.
     </p>
   </section>
 
-  <section data-aos="fade-up" class="request-section">
-    <h2 class="text-3xl font-semibold mb-6">Send Us Your Requests</h2>
-    <p class="mb-4">Got ideas or questions? Use our Google Forms below to send us your mask, tail, or video requests!</p>
+  <section data-aos="fade-up" class="request-section px-4 py-16 md:px-8 max-w-4xl mx-auto">
+    <h2 class="text-3xl font-semibold mb-6 text-center">Send Us Your Requests</h2>
+    <p class="mb-4 text-center">Got ideas or questions? Use our Google Forms below to send us your mask, tail, or video requests!</p>
     <div class="flex flex-wrap justify-center gap-4">
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSdvvZUvaleGD__fWu_iC8hX74fNxr8Q9v6Lw8OSZxy-wmOJYg/viewform?embedded=true" target="_blank" class="btn-primary">Mask Request</a>
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSe1DRXAirat96Gv32LmOrex_yRWNe-BRNVoCQdJyCTIxBupmA/viewform?embedded=true" target="_blank" class="btn-primary">Tail Request</a>
@@ -157,48 +221,121 @@
     </div>
   </section>
 
-  <footer>
-    © <span id="year"></span> The Lone Wolf. All rights reserved.
+  <footer class="bg-stone-200">
+    &copy; <span id="year"></span> The Lone Wolf. All rights reserved.
   </footer>
 
-  <script>
+  <!-- Scripts -->
+  <script type="module">
+    // --- Firebase SDKs for Curated Videos Section ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // --- IMPORTANT: PASTE YOUR FIREBASE CONFIG HERE ---
+    // Use the SAME firebaseConfig object from your admin.html
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY", // Replace with your actual API Key
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const curatedVideosCollection = collection(db, "curatedVideos"); // Must match the collection name in admin.html
+
     // Update year in footer
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // --- SCRIPT MODIFICATION START ---
-    // Load latest video ID and embed it using the RSS feed
-    async function loadLatestVideo() {
-      const channelId = 'UCo3Z-t-u4yfE5omo8Q_cl5Q';
-      const rssUrl = `https://www.youtube.com/watch?v=347tFfxfDak3{channelId}`;
-      const proxyUrl = 'https://api.allorigins.win/raw?url='; // Use a CORS proxy
+    // --- SCRIPT FOR LATEST VIDEO FROM YOUTUBE RSS FEED (UNCHANGED) ---
+    async function getLatestVideosFromRSS() {
+        const channelId = 'UCo3Z-t-u4yfE5omo8Q_cl5Q';
+        const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+        // Changed CORS proxy to a more reliable one
+        const proxyUrl = 'https://corsproxy.io/?'; // Updated CORS proxy
 
-      try {
-        const response = await fetch(proxyUrl + encodeURIComponent(rssUrl));
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        try {
+            const response = await fetch(proxyUrl + encodeURIComponent(rssUrl));
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const xmlText = await response.text();
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+            const firstEntry = xmlDoc.querySelector("entry");
+            
+            if (firstEntry) {
+                const videoUrl = firstEntry.querySelector("link").getAttribute("href");
+                // Extract video ID from various YouTube URL formats
+                const videoIdMatch = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/);
+                
+                if (videoIdMatch && videoIdMatch[1]) {
+                    const videoId = videoIdMatch[1];
+                    document.getElementById('latestYtVideo').src = `https://www.youtube.com/embed/${videoId}?rel=0`;
+                } else {
+                    console.warn("Could not extract video ID from URL:", videoUrl);
+                    document.getElementById('latestYtVideo').src = "https://www.youtube.com/embed/dQw4w9WgXcQ"; // Fallback: Rick Astley
+                }
+            } else {
+                console.log("No videos found in YouTube RSS feed. Displaying fallback.");
+                document.getElementById('latestYtVideo').src = "https://www.youtube.com/embed/dQw4w9WgXcQ"; // Fallback: Rick Astley
+            }
+        } catch (error) {
+            console.error("Failed to fetch videos from RSS:", error);
+            document.getElementById('latestYtVideo').src = "https://www.youtube.com/embed/dQw4w9WgXcQ"; // Fallback: Rick Astley
         }
-        const xmlText = await response.text();
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-        const firstEntry = xmlDoc.querySelector("entry");
-        
-        if (firstEntry) {
-          const videoUrl = firstEntry.querySelector("link").getAttribute("href");
-          const videoId = videoUrl.split('v=')[1];
-          document.getElementById('latestYtVideo').src = `https://www.youtube.com/watch?v=347tFfxfDak4{videoId}?rel=0`;
-        } else {
-          // Fallback if no videos are found in the feed
-          document.getElementById('latestYtVideo').src = "https://www.youtube.com/watch?v=347tFfxfDak5";
-        }
-      } catch (error) {
-        console.error("Failed to fetch videos:", error);
-        // Fallback in case of a network or parsing error
-        document.getElementById('latestYtVideo').src = "https://www.youtube.com/watch?v=347tFfxfDak6";
-      }
     }
 
-    loadLatestVideo();
-    // --- SCRIPT MODIFICATION END ---
+    getLatestVideosFromRSS();
+    // --- END SCRIPT FOR LATEST VIDEO ---
+
+    // --- SCRIPT FOR CURATED VIDEOS FROM FIRESTORE ---
+    async function loadCuratedVideosFromFirestore() {
+        const curatedVideosList = document.getElementById('curatedVideosList');
+        const loadingCuratedVideos = document.getElementById('loadingCuratedVideos');
+        loadingCuratedVideos.style.display = 'block';
+        curatedVideosList.innerHTML = ''; // Clear previous content
+
+        try {
+            const q = query(curatedVideosCollection, orderBy("timestamp", "desc"));
+            const querySnapshot = await getDocs(q);
+
+            if (querySnapshot.empty) {
+                curatedVideosList.innerHTML = '<p class="text-center text-gray-500 col-span-full">No curated videos added yet. Add some from the <a href="admin.html" class="text-blue-600 hover:underline">admin panel</a>!</p>';
+            } else {
+                querySnapshot.forEach((doc) => {
+                    const item = doc.data();
+                    const videoIdMatch = item.videoUrl ? item.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/) : null;
+                    const videoId = videoIdMatch && videoIdMatch[1] ? videoIdMatch[1] : '';
+                    const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://placehold.co/320x180/cccccc/333333?text=No+Image';
+
+                    curatedVideosList.innerHTML += `
+                        <div class="curated-video-card" data-aos="fade-up">
+                            <a href="${item.videoUrl}" target="_blank">
+                                <img src="${thumbnailUrl}" alt="${item.videoTitle}">
+                            </a>
+                            <div class="curated-video-card-content">
+                                <h4>${item.videoTitle}</h4>
+                                <p>${item.description || 'No description provided.'}</p>
+                                <a href="${item.videoUrl}" target="_blank" class="text-amber-700 hover:underline text-sm font-semibold">Watch Now &rarr;</a>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        } catch (error) {
+            console.error("Error loading curated videos from Firestore:", error);
+            curatedVideosList.innerHTML = '<p class="text-center text-red-500 col-span-full">Error loading curated videos.</p>';
+        } finally {
+            loadingCuratedVideos.style.display = 'none';
+        }
+    }
+
+    loadCuratedVideosFromFirestore();
+    // --- END SCRIPT FOR CURATED VIDEOS ---
 
     // Initialize AOS animations
     AOS.init({
