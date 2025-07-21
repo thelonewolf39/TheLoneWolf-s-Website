@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Lone Wolf - Admin Panel</title>
+    <!-- Add this meta tag to prevent indexing -->
+    <meta name="robots" content="noindex"> 
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: #f7f3ef; /* light warm cream */
+            color: #3e3e3e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1, h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: #2a2a2a;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px; /* Reverted max-width */
+            margin: 1rem;
+        }
+        .btn-primary {
+            background-color: #845422;
+            color: #f7f3ef;
+            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(132, 84, 34, 0.4);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn-primary:hover {
+            background-color: #a26324;
+            transform: scale(1.05);
+        }
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+        .message-box {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border: 1px solid #ffeeba;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: none; /* Hidden by default */
+        }
+        .message-box.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+        .message-box.success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+        .item-card {
+            background-color: #f0f0f0;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-bold text-center mb-6">Admin Panel</h1>
+
+        <!-- Message Box for notifications -->
+        <div id="messageBox" class="message-box"></div>
+
+        <!-- Login Section -->
+        <div id="loginSection">
+            <h2 class="text-2xl font-semibold mb-4">Login</h2>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button id="loginButton" class="btn-primary w-full">Login</button>
+        </div>
+
+        <!-- Admin Content Section (Hidden until logged in) -->
+        <div id="adminContent" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold">Manage Curated Videos</h2>
+                <button id="logoutButton" class="btn-primary">Logout</button>
+            </div>
+
+            <p class="mb-4 text-sm text-gray-600">
+                Use this panel to add, edit, or delete videos for a curated list (e.g., "Featured Videos" or "Archive").
+                Note: The "Latest Video" on your homepage is automatically pulled from your YouTube channel's RSS feed and is not controlled here.
+            </p>
+
+            <!-- Add/Edit Item Form -->
+            <form id="itemForm" class="mb-8">
+                <input type="hidden" id="itemId">
+                <h3 class="text-xl font-semibold mb-3" id="formTitle">Add New Video</h3>
+                <label for="videoTitle" class="block text-sm font-medium text-gray-700 mb-1">Video Title:</label>
+                <input type="text" id="videoTitle" placeholder="Video Title" required>
+                
+                <label for="videoUrl" class="block text-sm font-medium text-gray-700 mb-1">YouTube Video URL:</label>
+                <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=VIDEO_ID" required>
+                
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description (Optional):</label>
+                <textarea id="description" placeholder="Short description of the video" rows="3"></textarea>
+                
+                <button type="submit" class="btn-primary w-full" id="submitButton">Add Video</button>
+                <button type="button" class="btn-primary mt-2 w-full bg-gray-500 hover:bg-gray-600" id="cancelEditButton" style="display:none;">Cancel Edit</button>
+            </form>
+
+            <!-- Items List -->
+            <h3 class="text-xl font-semibold mb-3">Existing Curated Videos</h3>
+            <div id="itemsList">
+                <!-- Items will be loaded here dynamically -->
+                <p class="text-center text-gray-500" id="loadingMessage">Loading videos...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import Firebase configuration from a separate file
+        import { firebaseConfig } from './firebase-config.js'; 
+
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app); 
+        const db = getFirestore(app); 
+        const videosCollection = collection(db, "curatedVideos"); // Collection name
+
+        // DOM Elements
+        const loginSection = document.getElementById('loginSection');
+        const adminContent = document.getElementById('adminContent');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('loginButton');
+        const logoutButton = document.getElementById('logoutButton');
+        const itemForm = document.getElementById('itemForm');
+        const itemIdInput = document.getElementById('itemId');
+        const videoTitleInput = document.getElementById('videoTitle');
+        const videoUrlInput = document.getElementById('videoUrl');
+        const descriptionInput = document.getElementById('description');
+        const submitButton = document.getElementById('submitButton');
+        const cancelEditButton = document.getElementById('cancelEditButton');
+        const itemsList = document.getElementById('itemsList');
+        const formTitle = document.getElementById('formTitle');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const messageBox = document.getElementById('messageBox');
+
+        // Function to display messages
+        function showMessage(message, type = 'info') {
+            messageBox.textContent = message;
+            messageBox.className = `message-box ${type}`;
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 5000); // Hide after 5 seconds
+        }
+
+        // Authentication State Listener
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                loginSection.classList.add('hidden');
+                adminContent.classList.remove('hidden');
+                console.log("User logged in:", user.email);
+                loadItems(); // Load items when user logs in
+            } else {
+                // User is signed out
+                loginSection.classList.remove('hidden');
+                adminContent.classList.add('hidden');
+                console.log("User logged out.");
+                itemsList.innerHTML = ''; // Clear items when logged out
+                loadingMessage.style.display = 'none';
+            }
+        });
+
+        // Login Functionality
+        loginButton.addEventListener('click', async () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                showMessage('Logged in successfully!', 'success');
+            } catch (error) {
+                console.error("Login error:", error);
+                showMessage(`Login failed: ${error.message}`, 'error');
+            }
+        });
+
+        // Logout Functionality
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                showMessage('Logged out successfully.', 'info');
+                // Clear form fields on logout
+                itemForm.reset();
+                itemIdInput.value = '';
+                formTitle.textContent = 'Add New Video';
+                submitButton.textContent = 'Add Video';
+                cancelEditButton.style.display = 'none';
+            } catch (error) {
+                console.error("Logout error:", error);
+                showMessage(`Logout failed: ${error.message}`, 'error');
+            }
+        });
+
+        // Load Items from Firestore
+        let unsubscribe; // To store the unsubscribe function for real-time updates
+
+        async function loadItems() {
+            loadingMessage.style.display = 'block';
+            // Detach previous listener if exists
+            if (unsubscribe) {
+                unsubscribe();
+            }
+
+            // Set up real-time listener
+            const q = query(videosCollection, orderBy("timestamp", "desc")); 
+
+            unsubscribe = onSnapshot(q, (snapshot) => {
+                itemsList.innerHTML = ''; // Clear current list
+                loadingMessage.style.display = 'none';
+
+                if (snapshot.empty) {
+                    itemsList.innerHTML = '<p class="text-center text-gray-500">No curated videos added yet.</p>';
+                    return;
+                }
+
+                snapshot.forEach((doc) => {
+                    const item = doc.data();
+                    const itemId = doc.id;
+                    const videoIdMatch = item.videoUrl ? item.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([\w-]{11})/) : null;
+                    const videoId = videoIdMatch && videoIdMatch[1] ? videoIdMatch[1] : '';
+                    const thumbnailUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://placehold.co/120x90/cccccc/333333?text=No+Image';
+
+                    itemsList.innerHTML += `
+                        <div class="item-card flex items-center space-x-4">
+                            <img src="${thumbnailUrl}" alt="Video Thumbnail" class="w-24 h-auto rounded-md object-cover">
+                            <div class="flex-grow">
+                                <h4 class="font-semibold text-lg">${item.videoTitle}</h4>
+                                <p class="text-sm text-gray-600">${item.description || 'No description'}</p>
+                                <a href="${item.videoUrl}" target="_blank" class="text-blue-600 hover:underline text-sm">View Video</a>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="btn-primary px-3 py-1 text-sm bg-blue-500 hover:bg-blue-600 edit-btn" data-id="${itemId}">Edit</button>
+                                <button class="btn-primary px-3 py-1 text-sm bg-red-500 hover:bg-red-600 delete-btn" data-id="${itemId}">Delete</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                // Add event listeners for edit/delete buttons
+                document.querySelectorAll('.edit-btn').forEach(button => {
+                    button.addEventListener('click', (e) => editItem(e.target.dataset.id));
+                });
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', (e) => deleteItem(e.target.dataset.id));
+                });
+            }, (error) => {
+                console.error("Error loading items:", error);
+                loadingMessage.style.display = 'none';
+                itemsList.innerHTML = '<p class="text-center text-red-500">Error loading videos.</p>';
+                showMessage(`Error loading videos: ${error.message}`, 'error');
+            });
+        }
+
+        // Add/Update Item Functionality
+        itemForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const videoTitle = videoTitleInput.value.trim();
+            const videoUrl = videoUrlInput.value.trim();
+            const description = descriptionInput.value.trim();
+            const itemId = itemIdInput.value;
+
+            if (!videoTitle || !videoUrl) {
+                showMessage('Video Title and URL are required.', 'error');
+                return;
+            }
+
+            try {
+                if (itemId) {
+                    // Update existing item
+                    const itemRef = doc(db, "curatedVideos", itemId);
+                    await updateDoc(itemRef, {
+                        videoTitle,
+                        videoUrl,
+                        description,
+                        updatedAt: new Date()
+                    });
+                    showMessage('Video updated successfully!', 'success');
+                } else {
+                    // Add new item
+                    await addDoc(videosCollection, {
+                        videoTitle,
+                        videoUrl,
+                        description,
+                        timestamp: new Date() // Use server timestamp for consistent ordering
+                    });
+                    showMessage('Video added successfully!', 'success');
+                }
+                itemForm.reset();
+                itemIdInput.value = '';
+                formTitle.textContent = 'Add New Video';
+                submitButton.textContent = 'Add Video';
+                cancelEditButton.style.display = 'none';
+            } catch (error) {
+                console.error("Error saving video:", error);
+                showMessage(`Error saving video: ${error.message}`, 'error');
+            }
+        });
+
+        // Edit Item Functionality
+        async function editItem(id) {
+            try {
+                const itemRef = doc(db, "curatedVideos", id);
+                const itemSnap = await getDoc(itemRef);
+                if (itemSnap.exists()) {
+                    const itemData = itemSnap.data();
+                    itemIdInput.value = id;
+                    videoTitleInput.value = itemData.videoTitle;
+                    videoUrlInput.value = itemData.videoUrl;
+                    descriptionInput.value = itemData.description || '';
+                    formTitle.textContent = 'Edit Video';
+                    submitButton.textContent = 'Update Video';
+                    cancelEditButton.style.display = 'inline-block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top to show form
+                } else {
+                    showMessage('Video not found for editing.', 'error');
+                }
+            } catch (error) {
+                console.error("Error fetching video for edit:", error);
+                showMessage(`Error fetching video for edit: ${error.message}`, 'error');
+            }
+        });
+
+        // Cancel Edit Functionality
+        cancelEditButton.addEventListener('click', () => {
+            itemForm.reset();
+            itemIdInput.value = '';
+            formTitle.textContent = 'Add New Video';
+            submitButton.textContent = 'Add Video';
+            cancelEditButton.style.display = 'none';
+        });
+
+        // Delete Item Functionality
+        async function deleteItem(id) {
+            if (confirm("Are you sure you want to delete this video?")) { // Using confirm for simplicity, consider custom modal for production
+                try {
+                    await deleteDoc(doc(db, "curatedVideos", id));
+                    showMessage('Video deleted successfully!', 'success');
+                } catch (error) {
+                    console.error("Error deleting video:", error);
+                    showMessage(`Error deleting video: ${error.message}`, 'error');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
